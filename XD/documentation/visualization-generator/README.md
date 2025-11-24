@@ -1,0 +1,187 @@
+# FarmMe Visualization Generator
+
+Automated visualization generation system for FarmMe ML models (A, B, C, D).
+
+## Overview
+
+This tool generates publication-quality visualizations (PNG, 300 DPI) for all FarmMe machine learning models, including:
+
+- **Model A (Crop Recommendation)**: Performance metrics, algorithm comparison, metrics breakdown
+- **Model B (Planting Window)**: Classification metrics, ROC curves, precision-recall analysis
+- **Model C (Price Forecast)**: Regression metrics, price predictions
+- **Model D (Harvest Decision)**: Thompson Sampling posteriors, decision metrics, arm comparison
+- **Cross-Model Comparisons**: Overview tables, performance summaries
+
+## Quick Start
+
+### Windows
+
+1. Double-click `run_visualizations.bat`
+2. Wait for generation to complete
+3. Open `outputs/[timestamp]/index.html` in your browser
+
+### Manual Execution
+
+```bash
+# Install dependencies
+pip install matplotlib seaborn pandas numpy scikit-learn Pillow xgboost scipy
+
+# Run generator
+python generate_all_visualizations.py
+```
+
+## Requirements
+
+- Python 3.8 or higher
+- Required packages (auto-installed by batch file):
+  - matplotlib >= 3.7.0
+  - seaborn >= 0.12.0
+  - pandas >= 2.0.0
+  - numpy >= 1.24.0
+  - scikit-learn >= 1.3.0
+  - Pillow >= 10.0.0
+  - xgboost >= 2.0.0
+  - scipy
+
+## Input Files
+
+The generator expects the following files:
+
+```
+REMEDIATION_PRODUCTION/
+├── trained_models/
+│   ├── model_a_evaluation.json
+│   ├── model_a_xgboost.pkl
+│   ├── model_b_evaluation.json
+│   ├── model_b_logistic.pkl
+│   ├── model_d_evaluation.json
+│   └── model_d_thompson_sampling.pkl
+└── models_production/
+    ├── model_c_ultimate_results.json (or model_c_evaluation.json)
+    └── model_c_price_forecast.pkl
+```
+
+## Output Structure
+
+```
+outputs/
+└── YYYY-MM-DD_HHMMSS/
+    ├── Model_A/
+    │   ├── model_a_performance_metrics.png
+    │   ├── model_a_algorithm_comparison.png
+    │   └── model_a_metrics_breakdown.png
+    ├── Model_B/
+    │   ├── model_b_classification_metrics.png
+    │   ├── model_b_algorithm_heatmap.png
+    │   └── model_b_precision_recall.png
+    ├── Model_C/
+    │   ├── model_c_performance_metrics.png
+    │   └── model_c_metrics_comparison.png
+    ├── Model_D/
+    │   ├── model_d_decision_metrics.png
+    │   ├── model_d_posterior_distributions.png
+    │   └── model_d_arm_comparison.png
+    ├── Comparisons/
+    │   ├── comparison_model_overview.png
+    │   └── comparison_performance_summary.png
+    ├── index.html                    # Preview page
+    ├── README.md                     # File listing
+    └── visualization_generation.log  # Execution log
+```
+
+## Features
+
+### Publication Quality
+- 300 DPI resolution
+- Consistent styling and color schemes
+- Professional fonts and layouts
+- Thai language support (if fonts available)
+
+### Error Handling
+- Continues on individual failures
+- Detailed error logging
+- Graceful degradation for missing data
+
+### Documentation
+- Auto-generated README with file listing
+- HTML preview page for quick review
+- Execution log for debugging
+
+## Usage in Documentation
+
+1. Run the generator
+2. Open `outputs/[timestamp]/index.html` to preview
+3. Copy desired PNG files to your documentation folder
+4. Reference in LaTeX/Word:
+   ```latex
+   \includegraphics[width=\textwidth]{model_a_performance_metrics.png}
+   ```
+
+## Customization
+
+### Changing DPI
+Edit `generate_all_visualizations.py`:
+```python
+viz_a = ModelAVisualizer(output_dir, dpi=600)  # Higher resolution
+```
+
+### Modifying Colors
+Edit `visualizers/base_visualizer.py`:
+```python
+colors = {
+    'primary': '#YOUR_COLOR',
+    'secondary': '#YOUR_COLOR',
+    # ...
+}
+```
+
+### Adding New Visualizations
+1. Edit the appropriate visualizer class in `visualizers/`
+2. Add new method following existing patterns
+3. Call from `generate_all()` method
+
+## Troubleshooting
+
+### "Python is not installed"
+- Install Python 3.8+ from python.org
+- Add Python to system PATH
+
+### "Model evaluation not found"
+- Ensure model files exist in correct locations
+- Check file paths in error log
+
+### "Failed to generate visualization"
+- Check `visualization_generation.log` for details
+- Verify all dependencies are installed
+- Ensure model evaluation JSONs are valid
+
+### Thai text not displaying
+- Install Thai fonts (Sarabun, TH Sarabun New, etc.)
+- System will fall back to default fonts if unavailable
+
+## Performance
+
+- Typical execution time: 30-60 seconds
+- Generates 10-15 visualizations
+- Output size: ~5-10 MB per run
+
+## Support
+
+For issues or questions:
+1. Check `visualization_generation.log`
+2. Verify input files exist and are valid JSON
+3. Ensure all dependencies are installed
+4. Check Python version (3.8+)
+
+## Version History
+
+- **1.0.0** (2025-11-19): Initial release
+  - Support for Models A, B, C, D
+  - Cross-model comparisons
+  - HTML preview generation
+  - Publication-quality output
+
+---
+
+**Generated by**: FarmMe Development Team  
+**Last Updated**: 2025-11-19

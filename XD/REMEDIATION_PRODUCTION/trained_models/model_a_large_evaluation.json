@@ -1,0 +1,105 @@
+{
+  "model": "Model A - Crop Recommendation (Large Dataset)",
+  "date": "2025-11-23T23:11:09.886259",
+  "status": "TRAINED",
+  "dataset_info": {
+    "source": "FARMME_GPU_DATASET.csv",
+    "sample_size": "ALL",
+    "total_samples": 1420412,
+    "train_samples": 1089905,
+    "val_samples": 200367,
+    "test_samples": 130140,
+    "embargo_days": 7
+  },
+  "algorithms": {
+    "xgboost": {
+      "name": "XGBoost",
+      "train_metrics": {
+        "r2": 0.8911499788566835,
+        "rmse": 52.64203017603104,
+        "mae": 38.7745020654338
+      },
+      "val_metrics": {
+        "r2": 0.8280673161071123,
+        "rmse": 51.59663409279435,
+        "mae": 37.72493282235471
+      },
+      "test_metrics": {
+        "r2": 0.8318480904354619,
+        "rmse": 50.70855147906658,
+        "mae": 37.13089647817722
+      },
+      "training_time": 0.9892547130584717,
+      "overfitting_gap": 0.05930188842122153,
+      "predictions_sample": [
+        86.79620361328125,
+        144.61387634277344,
+        266.1412353515625,
+        44.5985221862793,
+        78.47174072265625
+      ]
+    },
+    "rf_ensemble": {
+      "name": "Random Forest + ElasticNet",
+      "train_metrics": {
+        "r2": 0.8837351939827744,
+        "rmse": 54.405462501909206,
+        "mae": 42.17203062679369
+      },
+      "val_metrics": {
+        "r2": 0.8369149705614253,
+        "rmse": 50.2515194729493,
+        "mae": 36.83962671351494
+      },
+      "test_metrics": {
+        "r2": 0.836974832783617,
+        "rmse": 49.9295475046047,
+        "mae": 37.107479799021334
+      },
+      "training_time": 30.726409435272217,
+      "overfitting_gap": 0.046760361199157496,
+      "predictions_sample": [
+        240.7942768650421,
+        263.69401666622366,
+        311.0644418095552,
+        -61.20711797967485,
+        63.92391701054923
+      ]
+    },
+    "gradboost": {
+      "name": "Gradient Boosting",
+      "train_metrics": {
+        "r2": 0.9019763167927507,
+        "rmse": 49.955565480200846,
+        "mae": 36.76927852674323
+      },
+      "val_metrics": {
+        "r2": 0.8521187589113064,
+        "rmse": 47.851845669506865,
+        "mae": 34.60107636464761
+      },
+      "test_metrics": {
+        "r2": 0.8549424069038019,
+        "rmse": 47.09779082737483,
+        "mae": 33.96171090551391
+      },
+      "training_time": 248.8648076057434,
+      "overfitting_gap": 0.047033909888948844,
+      "predictions_sample": [
+        87.44701141461552,
+        151.71018051188628,
+        260.8444201365181,
+        42.37171827679438,
+        68.58041892520394
+      ]
+    }
+  },
+  "summary": {
+    "best_algorithm": "gradboost",
+    "best_r2": 0.8549424069038019,
+    "best_rmse": 47.09779082737483,
+    "total_training_time": 280.5804717540741,
+    "total_elapsed_time": 307.693693,
+    "note": "Trained with LARGE dataset (FARMME_GPU_DATASET)"
+  }
+}

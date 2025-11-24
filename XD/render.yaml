@@ -1,0 +1,23 @@
+services:
+  # Backend API
+  - type: web
+    name: farmtime-backend
+    env: python
+    region: singapore
+    plan: free
+    buildCommand: |
+      cd backend
+      pip install -r requirements.txt
+    startCommand: cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: DATABASE_URL
+        sync: false  # Set manually from Supabase
+      - key: GEMINI_API_KEY
+        sync: false  # Set manually
+      - key: REDIS_URL
+        value: redis://localhost:6379
+      - key: ENVIRONMENT
+        value: production
+    healthCheckPath: /health

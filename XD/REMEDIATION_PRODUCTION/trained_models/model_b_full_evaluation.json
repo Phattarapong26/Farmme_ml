@@ -1,0 +1,110 @@
+{
+  "model": "Model B - Planting Window (Full Dataset)",
+  "date": "2025-11-19T18:48:59.144566",
+  "status": "TRAINED",
+  "dataset_info": {
+    "total_samples": 6226,
+    "train_samples": 3735,
+    "val_samples": 1245,
+    "test_samples": 1246
+  },
+  "algorithms": {
+    "xgboost": {
+      "name": "XGBoost",
+      "train_metrics": {
+        "f1": 0.7820980153908464,
+        "precision": 0.8709968425800632,
+        "recall": 0.7096655641308343,
+        "roc_auc": 0.8020495133547461
+      },
+      "val_metrics": {
+        "f1": 0.6647264260768335,
+        "precision": 0.8145506419400856,
+        "recall": 0.5614552605703048,
+        "roc_auc": 0.480545636460867
+      },
+      "test_metrics": {
+        "f1": 0.6986794717887155,
+        "precision": 0.819718309859155,
+        "recall": 0.608786610878661,
+        "roc_auc": 0.6042039388255662
+      },
+      "training_time": 0.15971636772155762,
+      "predictions_sample": [
+        1,
+        1,
+        1,
+        0,
+        1
+      ]
+    },
+    "random_forest": {
+      "name": "Random Forest",
+      "train_metrics": {
+        "f1": 0.8053665175967334,
+        "precision": 0.8550784475639966,
+        "recall": 0.7611172363101801,
+        "roc_auc": 0.7973541314648939
+      },
+      "val_metrics": {
+        "f1": 0.7277686852154938,
+        "precision": 0.8174019607843137,
+        "recall": 0.655850540806293,
+        "roc_auc": 0.4919331884282979
+      },
+      "test_metrics": {
+        "f1": 0.7142857142857143,
+        "precision": 0.7948717948717948,
+        "recall": 0.6485355648535565,
+        "roc_auc": 0.5923586062617227
+      },
+      "training_time": 0.13358759880065918,
+      "predictions_sample": [
+        1,
+        1,
+        1,
+        0,
+        1
+      ]
+    },
+    "gradboost": {
+      "name": "Gradient Boosting",
+      "train_metrics": {
+        "f1": 0.862493997118617,
+        "precision": 0.7640385706182643,
+        "recall": 0.9900771775082691,
+        "roc_auc": 0.834424452374584
+      },
+      "val_metrics": {
+        "f1": 0.8760255241567912,
+        "precision": 0.816482582837723,
+        "recall": 0.9449360865290068,
+        "roc_auc": 0.4932873604857768
+      },
+      "test_metrics": {
+        "f1": 0.8487712665406427,
+        "precision": 0.7741379310344828,
+        "recall": 0.9393305439330544,
+        "roc_auc": 0.5841112393593998
+      },
+      "training_time": 0.3109257221221924,
+      "predictions_sample": [
+        1,
+        1,
+        1,
+        0,
+        1
+      ]
+    }
+  },
+  "summary": {
+    "best_algorithm": "gradboost",
+    "best_f1": 0.8487712665406427,
+    "best_precision": 0.7741379310344828,
+    "best_recall": 0.9393305439330544,
+    "best_roc_auc": 0.5841112393593998,
+    "total_training_time": 0.6042296886444092,
+    "total_elapsed_time": 2.590451,
+    "note": "Binary classification with FULL dataset using 3 algorithms"
+  }
+}

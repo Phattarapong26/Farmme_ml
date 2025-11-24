@@ -1,0 +1,35 @@
+{
+  "model": "Model D - Harvest Decision Engine",
+  "algorithm": "Thompson Sampling (L4 Contextual Bandit)",
+  "date": "2025-11-15T11:48:43.484223",
+  "status": "TRAINED",
+  "metrics": {
+    "decision_accuracy": 0.48875,
+    "profit_efficiency": 0.9684412215198298,
+    "total_scenarios": 2000,
+    "correct_decisions": 1955
+  },
+  "posteriors": {
+    "Harvest Now": {
+      "alpha": 86.0,
+      "beta": 43.0,
+      "mean": 0.6666666666666666,
+      "variance": 0.0017094017094017094
+    },
+    "Wait 3 Days": {
+      "alpha": 2545.0,
+      "beta": 442.0,
+      "mean": 0.8520254435888852,
+      "variance": 4.2194808255036355e-05
+    },
+    "Wait 7 Days": {
+      "alpha": 749.0,
+      "beta": 141.0,
+      "mean": 0.8415730337078652,
+      "variance": 0.00014963845414546083
+    }
+  },
+  "summary": {
+    "note": "Thompson Sampling learns optimal harvest timing through exploration-exploitation"
+  }
+}

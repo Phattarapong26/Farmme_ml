@@ -1,0 +1,355 @@
+# ============================================================================
+# SENSITIVE FILES - NEVER COMMIT THESE!
+# ============================================================================
+
+# Environment variables (contains passwords and API keys)
+.env
+.env.local
+.env.*.local
+backend/.env
+backend/.env.local
+backend/.env.backup*
+
+# ============================================================================
+# PYTHON
+# ============================================================================
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+.virtualenv/
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# ============================================================================
+# NODE / FRONTEND
+# ============================================================================
+
+# Dependencies
+node_modules/
+frontend/node_modules/
+/.pnp
+.pnp.js
+
+# Testing
+/coverage
+
+# Production
+/build
+frontend/build/
+frontend/dist/
+
+# Misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Next.js
+.next/
+out/
+
+# Nuxt.js
+.nuxt
+dist
+
+# Gatsby files
+.cache/
+public
+
+# vuepress build output
+.vuepress/dist
+
+# Serverless directories
+.serverless/
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# ============================================================================
+# DATABASE
+# ============================================================================
+
+# SQLite databases
+*.db
+*.sqlite
+*.sqlite3
+farmme_mock.db
+
+# PostgreSQL dumps
+*.sql
+*.dump
+backend/scripts/exports/*.sql
+
+# Database backups
+*.backup
+
+# ============================================================================
+# ML MODELS & DATA
+# ============================================================================
+
+# Large model files (should use Git LFS or external storage)
+*.h5
+*.pkl
+*.joblib
+*.model
+*.weights
+*.ckpt
+*.pth
+*.pt
+
+# Training data (too large for git)
+buildingModel.py/Dataset/*.csv
+buildingModel.py/Dataset/*.json
+buildingModel.py/Dataset/*.parquet
+
+# Model outputs
+models/output/
+models/checkpoints/
+models/logs/
+
+# TensorFlow
+*.pb
+saved_model/
+checkpoint
+
+# ============================================================================
+# IDE / EDITOR
+# ============================================================================
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# ============================================================================
+# OS
+# ============================================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ============================================================================
+# LOGS
+# ============================================================================
+
+# Log files
+*.log
+logs/
+*.log.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# ============================================================================
+# TEMPORARY FILES
+# ============================================================================
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
+
+# Cache
+.cache/
+*.cache
+
+# ============================================================================
+# PROJECT SPECIFIC
+# ============================================================================
+
+# Migration reports
+backend/scripts/migration_report_*.txt
+
+# Export files
+backend/scripts/exports/
+
+# Test outputs
+test_output/
+test_results/
+
+# Documentation builds
+docs/_build/
+docs/.doctrees/
+
+# ============================================================================
+# SECURITY
+# ============================================================================
+
+# Private keys
+*.pem
+*.key
+*.cert
+*.crt
+id_rsa
+id_rsa.pub
+
+# Secrets
+secrets/
+.secrets/
+credentials.json
+
+# ============================================================================
+# KEEP THESE FILES (exceptions to above rules)
+# ============================================================================
+
+# Keep example env file
+!.env.example
+!backend/.env.example
+
+# Keep small sample datasets for testing
+!buildingModel.py/Dataset/sample_*.csv
+
+# Keep documentation
+!docs/
+
+# Keep README files
+!README.md
+!*/README.md

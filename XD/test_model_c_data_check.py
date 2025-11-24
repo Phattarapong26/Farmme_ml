@@ -1,0 +1,64 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+Test Model C Data Availability Check
+"""
+
+import sys
+import os
+sys.path.insert(0, 'backend')
+
+# Fix encoding for Windows
+if os.name == 'nt':
+    import codecs
+    sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
+    sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
+
+from model_c_wrapper import model_c_wrapper
+
+print("=" * 60)
+print("Testing Model C Data Availability Check")
+print("=" * 60)
+
+# Test 1: Crop+Province ที่ไม่มีข้อมูล
+print("\n1. Testing: ข้าว + สุพรรณบุรี (should fail)")
+result = model_c_wrapper.predict_price('ข้าว', 'สุพรรณบุรี', 7)
+print(f"   Success: {result.get('success')}")
+print(f"   Error: {result.get('error')}")
+print(f"   Message: {result.get('message')}")
+print(f"   Suggestions: {result.get('suggestions', [])[:3]}")
+
+# Test 2: Crop+Province ที่มีข้อมูล
+print("\n2. Testing: พริก + เชียงใหม่ (should succeed)")
+result = model_c_wrapper.predict_price('พริก', 'เชียงใหม่', 7)
+print(f"   Success: {result.get('success')}")
+if result.get('success'):
+    print(f"   Model used: {result.get('model_used')}")
+    print(f"   Current price: {result.get('current_price')}")
+    print(f"   Predictions: {len(result.get('predictions', []))}")
+else:
+    print(f"   Error: {result.get('error')}")
+    print(f"   Message: {result.get('message')}")
+
+# Test 3: Another valid crop+province
+print("\n3. Testing: มะเขือเทศ + เชียงใหม่ (should succeed)")
+result = model_c_wrapper.predict_price('มะเขือเทศ', 'เชียงใหม่', 7)
+print(f"   Success: {result.get('success')}")
+if result.get('success'):
+    print(f"   Model used: {result.get('model_used')}")
+    print(f"   Current price: {result.get('current_price')}")
+else:
+    print(f"   Error: {result.get('error')}")
+    print(f"   Message: {result.get('message')}")
+
+# Test 4: Invalid crop name
+print("\n4. Testing: พืชที่ไม่มี + เชียงใหม่ (should fail)")
+result = model_c_wrapper.predict_price('พืชที่ไม่มีจริง', 'เชียงใหม่', 7)
+print(f"   Success: {result.get('success')}")
+print(f"   Error: {result.get('error')}")
+print(f"   Message: {result.get('message')}")
+print(f"   Suggestions: {result.get('suggestions', [])[:3]}")
+
+print("\n" + "=" * 60)
+print("✅ Test completed!")
+print("=" * 60)

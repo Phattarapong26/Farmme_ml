@@ -1,0 +1,60 @@
+{
+  "model": "Model B - Planting Window",
+  "date": "2025-11-23T23:36:39.602533",
+  "status": "TRAINED",
+  "algorithms": {
+    "xgboost": {
+      "name": "XGBoost Classifier",
+      "metrics": {
+        "f1": 0.9967051070840197,
+        "precision": 0.9967051070840197,
+        "recall": 0.9967051070840197,
+        "roc_auc": 0.9992845596367884
+      },
+      "predictions": [
+        0,
+        1,
+        1,
+        0,
+        1
+      ]
+    },
+    "temporal_gb": {
+      "name": "Temporal Gradient Boosting",
+      "metrics": {
+        "f1": 0.9967051070840197,
+        "precision": 0.9967051070840197,
+        "recall": 0.9967051070840197,
+        "roc_auc": 0.9991376043189395
+      },
+      "predictions": [
+        0,
+        1,
+        1,
+        0,
+        1
+      ]
+    },
+    "logistic": {
+      "name": "Logistic Regression (Baseline)",
+      "metrics": {
+        "f1": 0.9504617968094039,
+        "precision": 0.9691780821917808,
+        "recall": 0.9324546952224053,
+        "roc_auc": 0.9808648707179927
+      },
+      "predictions": [
+        0,
+        1,
+        1,
+        0,
+        1
+      ]
+    }
+  },
+  "summary": {
+    "best_algorithm": "xgboost",
+    "best_f1": 0.9967051070840197,
+    "note": "Binary classification: Good/Bad planting window. All use CLEAN data (no post-outcome features)"
+  }
+}

@@ -1,0 +1,49 @@
+# ML Farming Pipeline - Dependencies
+
+# Core Data Science
+numpy>=1.24.0
+pandas>=2.0.0
+scipy>=1.10.0
+
+# Machine Learning
+scikit-learn>=1.3.0
+xgboost>=2.0.0
+
+# Deep Learning (optional, for future LSTM)
+# tensorflow>=2.13.0
+# torch>=2.0.0
+
+# Time Series Forecasting
+# prophet>=1.1.0  # Uncomment if using Prophet for Model C
+statsmodels>=0.14.0  # For ARIMA
+
+# Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Optimization (for NSGA-II)
+deap>=1.4.0  # Genetic algorithms
+pymoo>=0.6.0  # Multi-objective optimization
+
+# Utilities
+tqdm>=4.65.0  # Progress bars
+joblib>=1.3.0  # Model persistence
+python-dateutil>=2.8.0
+
+# Logging and Monitoring
+loguru>=0.7.0  # Enhanced logging (optional)
+
+# API (optional, for future deployment)
+# fastapi>=0.100.0
+# uvicorn>=0.23.0
+# pydantic>=2.0.0
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
+# Development
+jupyter>=1.0.0
+ipython>=8.14.0
+black>=23.7.0  # Code formatting
+flake8>=6.0.0  # Linting

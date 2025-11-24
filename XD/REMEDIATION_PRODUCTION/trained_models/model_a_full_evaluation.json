@@ -1,0 +1,103 @@
+{
+  "model": "Model A - Crop Recommendation (Full Dataset)",
+  "date": "2025-11-19T17:50:49.685509",
+  "status": "TRAINED",
+  "dataset_info": {
+    "total_samples": 5977,
+    "train_samples": 4351,
+    "val_samples": 1115,
+    "test_samples": 511,
+    "embargo_days": 7
+  },
+  "algorithms": {
+    "xgboost": {
+      "name": "XGBoost",
+      "train_metrics": {
+        "r2": 0.9946436038791678,
+        "rmse": 31.706857439868056,
+        "mae": 19.999647735809628
+      },
+      "val_metrics": {
+        "r2": 0.9953817165350974,
+        "rmse": 27.812312259031003,
+        "mae": 17.537823112248304
+      },
+      "test_metrics": {
+        "r2": 0.9948940153016346,
+        "rmse": 25.04396934272594,
+        "mae": 15.737310530033598
+      },
+      "training_time": 0.17388319969177246,
+      "overfitting_gap": -0.0002504114224667342,
+      "predictions_sample": [
+        1908.5115966796875,
+        57.242897033691406,
+        32.32267379760742,
+        121.0271987915039,
+        103.2413558959961
+      ]
+    },
+    "rf_ensemble": {
+      "name": "Random Forest + ElasticNet",
+      "train_metrics": {
+        "r2": 0.9866584984015055,
+        "rmse": 50.04022028055068,
+        "mae": 28.480128269981495
+      },
+      "val_metrics": {
+        "r2": 0.9883752230106693,
+        "rmse": 44.12544709312765,
+        "mae": 24.6874391269672
+      },
+      "test_metrics": {
+        "r2": 0.987570859988753,
+        "rmse": 39.073647040624245,
+        "mae": 23.086712549817296
+      },
+      "training_time": 0.10894298553466797,
+      "overfitting_gap": -0.000912361587247501,
+      "predictions_sample": [
+        1694.0865556750052,
+        38.330808260143826,
+        3.381564485257634,
+        102.84866281861406,
+        95.55001418794534
+      ]
+    },
+    "gradboost": {
+      "name": "Gradient Boosting",
+      "train_metrics": {
+        "r2": 0.9999327610236303,
+        "rmse": 3.552445330165906,
+        "mae": 2.2177187319872704
+      },
+      "val_metrics": {
+        "r2": 0.9999275572493325,
+        "rmse": 3.483327190769906,
+        "mae": 2.3056187087422955
+      },
+      "test_metrics": {
+        "r2": 0.9999370291133662,
+        "rmse": 2.781206995647312,
+        "mae": 1.9559286185939786
+      },
+      "training_time": 0.22664332389831543,
+      "overfitting_gap": -4.268089735970371e-06,
+      "predictions_sample": [
+        1852.9913269118972,
+        52.79285535296544,
+        32.67380474367761,
+        124.97700778298612,
+        95.12693756142858
+      ]
+    }
+  },
+  "summary": {
+    "best_algorithm": "gradboost",
+    "best_r2": 0.9999370291133662,
+    "best_rmse": 2.781206995647312,
+    "total_training_time": 0.5094695091247559,
+    "total_elapsed_time": 5.758336,
+    "note": "Trained with FULL dataset using strict time-aware split with embargo"
+  }
+}

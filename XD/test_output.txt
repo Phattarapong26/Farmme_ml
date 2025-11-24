@@ -1,0 +1,18 @@
+﻿================================================================================
+python : Traceback (most recent call last):
+At line:1 char:1
++ python test_api_endpoint.py 2>&1 | Out-File -Encoding UTF8 test_outpu ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], Rem 
+   oteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "C:\Users\LightZ\Desktop\XD\test_api_endpoint.py", line 15, in <module>
+    print("\U0001f9ea Testing API Endpoint Directly")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\LightZ\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 
+19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f9ea' in position 0: 
+character maps to <undefined>
