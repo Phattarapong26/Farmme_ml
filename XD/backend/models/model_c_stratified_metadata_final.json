@@ -1,0 +1,35 @@
+{
+  "model_name": "Gradient Boosting (Stratified by Price Range) - FINAL",
+  "strategy": "separate_models_per_price_range",
+  "dataset_size": 2170476,
+  "train_size": 1736380,
+  "test_size": 434096,
+  "overall_test_r2": 0.7588801126866673,
+  "overall_test_mae": 6.971822235889439,
+  "overall_test_rmse": 14.08587924708028,
+  "price_ranges": {
+    "low": "< 30.74",
+    "medium": "30.74 - 56.22",
+    "high": "> 56.22"
+  },
+  "model_performance": {
+    "low": {
+      "test_r2": 0.7722162980361936,
+      "test_mae": 2.173299588108871
+    },
+    "medium": {
+      "test_r2": 0.33698762634327484,
+      "test_mae": 4.100530826167006
+    },
+    "high": {
+      "test_r2": 0.08140109042183541,
+      "test_mae": 24.00951043043421
+    }
+  },
+  "hyperparameters": {
+    "n_estimators": 200,
+    "max_depth": 7,
+    "learning_rate": 0.1
+  },
+  "trained_at": "2025-11-23T17:09:22.288210"
+}

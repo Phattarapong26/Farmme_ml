@@ -1,0 +1,9 @@
+{
+  "low_threshold": 30.74,
+  "high_threshold": 56.22,
+  "categories": [
+    "low",
+    "medium",
+    "high"
+  ]
+}

@@ -1,0 +1,14 @@
+[
+  "price_lag_7",
+  "price_lag_14",
+  "price_lag_21",
+  "price_lag_30",
+  "price_ma_7",
+  "price_ma_14",
+  "price_ma_30",
+  "price_std_7",
+  "price_std_14",
+  "price_std_30",
+  "price_momentum_7d",
+  "price_momentum_30d"
+]
