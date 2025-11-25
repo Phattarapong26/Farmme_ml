@@ -30,14 +30,14 @@ jobs:
           cache-dependency-path: './XD/frontend/package-lock.json'
 
       - name: Install dependencies
-        run: |
-          cd XD/frontend
-          npm ci
+        working-directory: ./XD/frontend
+        run: npm ci
 
       - name: Build
-        run: |
-          cd XD/frontend
-          npm run build
+        working-directory: ./XD/frontend
+        run: npm run build
+        env:
+          VITE_BACKEND_URL: ""
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
