@@ -26,6 +26,9 @@ class ModelAWrapper:
     
     def __init__(self):
         self.model = None
+        self.scaler = None
+        self.encoders = None
+        self.metadata = None
         self.model_loaded = False
         self.model_path = None
         
@@ -37,8 +40,9 @@ class ModelAWrapper:
         try:
             # Try different Model A variants (prioritize new Gradient Boosting model)
             model_files = [
-                "model_a_xgboost.pkl",  # Now contains Gradient Boosting (deployed)
-                "model_a_gradboost_large.pkl",  # Backup: Gradient Boosting
+                "model_a_gradient_boosting.pkl",  # NEW: Production Gradient Boosting (R²=0.92)
+                "model_a_xgboost.pkl",  # Backup: XGBoost
+                "model_a_gradboost_large.pkl",  # Alternative: Gradient Boosting
                 "model_a_xgboost_large.pkl",  # Alternative: XGBoost
                 "model_a_rf_ensemble_large.pkl",  # Alternative: RF + ElasticNet
             ]
@@ -61,6 +65,30 @@ class ModelAWrapper:
                             self.n_features = self.model.n_features_in_
                         else:
                             self.n_features = 6  # Assume old model
+                        
+                        # Try to load scaler and encoders for new model
+                        if model_file == "model_a_gradient_boosting.pkl":
+                            try:
+                                scaler_path = models_dir / "model_a_scaler.pkl"
+                                encoders_path = models_dir / "model_a_encoders.pkl"
+                                metadata_path = models_dir / "model_a_metadata.pkl"
+                                
+                                if scaler_path.exists():
+                                    with open(scaler_path, 'rb') as f:
+                                        self.scaler = pickle.load(f)
+                                    logger.info(f"   ✓ Scaler loaded")
+                                
+                                if encoders_path.exists():
+                                    with open(encoders_path, 'rb') as f:
+                                        self.encoders = pickle.load(f)
+                                    logger.info(f"   ✓ Encoders loaded")
+                                
+                                if metadata_path.exists():
+                                    with open(metadata_path, 'rb') as f:
+                                        self.metadata = pickle.load(f)
+                                    logger.info(f"   ✓ Metadata loaded (R²={self.metadata.get('r2_score', 'N/A')})")
+                            except Exception as e:
+                                logger.warning(f"   ⚠ Could not load scaler/encoders: {e}")
                         
                         logger.info(f"✅ Model A loaded from: {model_path}")
                         logger.info(f"   Model type: {type(self.model).__name__}")
@@ -253,8 +281,68 @@ class ModelAWrapper:
                 risk_num = risk_map.get(crop_row['risk_level'], 0.5)
                 
                 # Create feature vector based on model requirements
-                if hasattr(self, 'n_features') and self.n_features == 19:
-                    # New model (19 features) - includes market, weather, and economic factors
+                if hasattr(self, 'n_features') and self.n_features == 13:
+                    # New Gradient Boosting model (13 features)
+                    # Features: plant_month, plant_quarter, day_of_year, planting_area_rai,
+                    #           farm_skill, tech_adoption, growth_days, investment_cost,
+                    #           weather_sensitivity, demand_elasticity, province_encoded,
+                    #           crop_encoded, season_encoded
+                    
+                    # Get current month (default to 1 if not available)
+                    current_month = 1
+                    plant_quarter = (current_month - 1) // 3 + 1
+                    day_of_year = current_month * 30
+                    
+                    # Encode province and crop if encoders available
+                    province_encoded = 0
+                    crop_encoded = 0
+                    season_encoded = 0
+                    
+                    if self.encoders:
+                        try:
+                            # Get season from month
+                            if current_month in [11, 12, 1, 2]:
+                                season = 'winter'
+                            elif current_month in [3, 4, 5]:
+                                season = 'summer'
+                            else:
+                                season = 'rainy'
+                            
+                            # Try to encode (use 0 if not found)
+                            try:
+                                province_encoded = self.encoders['province'].transform([province])[0]
+                            except:
+                                province_encoded = 0
+                            
+                            try:
+                                crop_encoded = self.encoders['crop'].transform([crop_name])[0]
+                            except:
+                                crop_encoded = 0
+                            
+                            try:
+                                season_encoded = self.encoders['season'].transform([season])[0]
+                            except:
+                                season_encoded = 0
+                        except Exception as e:
+                            logger.warning(f"Encoding error: {e}")
+                    
+                    features = np.array([[
+                        float(current_month),  # plant_month
+                        float(plant_quarter),  # plant_quarter
+                        float(day_of_year),  # day_of_year
+                        float(25),  # planting_area_rai (default)
+                        float(0.5),  # farm_skill (default intermediate)
+                        float(0.6),  # tech_adoption (default)
+                        float(crop_row['growth_days']),  # growth_days
+                        float(crop_row['investment_cost']),  # investment_cost
+                        float(crop_row.get('weather_sensitivity', 0.5)),  # weather_sensitivity
+                        float(crop_row.get('demand_elasticity', -0.5)),  # demand_elasticity
+                        float(province_encoded),  # province_encoded
+                        float(crop_encoded),  # crop_encoded
+                        float(season_encoded),  # season_encoded
+                    ]], dtype=np.float64)
+                elif hasattr(self, 'n_features') and self.n_features == 19:
+                    # Old model (19 features) - includes market, weather, and economic factors
                     features = np.array([[
                         float(25),  # planting_area_rai (default)
                         float(estimated_yield),  # expected_yield_kg
@@ -287,8 +375,12 @@ class ModelAWrapper:
                         float(risk_num)  # risk_level as number
                     ]], dtype=np.float64)
                 
-                # Predict ROI using ML model
-                predicted_roi = float(self.model.predict(features)[0])
+                # Predict ROI using ML model (with scaler if available)
+                if self.scaler is not None:
+                    features_scaled = self.scaler.transform(features)
+                    predicted_roi = float(self.model.predict(features_scaled)[0])
+                else:
+                    predicted_roi = float(self.model.predict(features)[0])
                 
                 # Calculate suitability score based on prediction and filters
                 suitability = self._calculate_suitability(

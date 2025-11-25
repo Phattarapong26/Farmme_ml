@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Send, User, Bot, Loader2, Sparkles, MessageCircle, Zap, Droplets, Sprout, TrendingUp, TrendingDown, Minus, Calendar } from 'lucide-react';
+import { Send, User, Bot, Loader2, Sparkles, MessageCircle, Zap } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { useToast } from '@/hooks/use-toast';
@@ -50,17 +50,18 @@ const ChatAI = () => {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const hasInitialized = useRef(false);
 
-  const scrollToBottom = () => {
+  // Scroll to bottom when messages change
+  useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  }, [messages.length]);
 
+  // Welcome message - only once
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  useEffect(() => {
-    // Welcome message with personalization
+    if (hasInitialized.current) return;
+    hasInitialized.current = true;
+    
     const userName = userProfile?.full_name || user?.username || 'คุณเกษตรกร';
     const welcomeMessage: Message = {
       id: 'welcome',
@@ -68,10 +69,9 @@ const ChatAI = () => {
       content: `สวัสดีครับคุณ${userName}! ยินดีต้อนรับสู่ระบบ AI ผู้ช่วยด้านการเกษตร 🌱\n\n**ผมสามารถช่วยคุณได้ในเรื่อง:**\n\n• 🌤️ วิเคราะห์สภาพอากาศและพยากรณ์อากาศ\n• 🌾 แนะนำการปลูกพืชที่เหมาะสมกับพื้นที่\n• 💧 คำแนะนำการจัดการน้ำและดิน\n• 📊 ทำนายราคาและแนวโน้มตลาด\n• 🐛 การจัดการศัตรูพืชและโรคพืช\n• 📅 วางแผนการเกษตรตามฤดูกาล\n\n**วิธีใช้งาน:**\nเพียงพิมพ์คำถามของคุณ ผมจะตอบด้วยข้อมูลที่เข้าใจง่ายและใช้งานได้จริง!\n\nมีอะไรให้ผมช่วยไหมครับ? 😊`,
       timestamp: new Date()
     };
+    
     setMessages([welcomeMessage]);
-  }, [user, userProfile]);
-
-
+  }, [userProfile?.full_name, user?.username]);
 
   const handleSendMessage = async () => {
     if (inputMessage.trim() === '' || isTyping) return;
@@ -89,22 +89,19 @@ const ChatAI = () => {
     setIsTyping(true);
 
     try {
-      // Get crop_id from user profile or default to 1
       let cropId = 1;
       if (userProfile?.experience_crops && Array.isArray(userProfile.experience_crops) && userProfile.experience_crops.length > 0) {
-        // Try to parse as number if it's a string
         const firstCrop = userProfile.experience_crops[0];
         cropId = typeof firstCrop === 'number' ? firstCrop : parseInt(firstCrop) || 1;
       }
 
-      // Call local backend chat endpoint with user profile
       const response = await fetch(`${API_BASE_URL}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           query: userInput,
-          user_id: user?.id || null,  // Send user ID for personalization
-          crop_id: cropId,  // Use user's crop preference
+          user_id: user?.id || null,
+          crop_id: cropId,
           price_history: [100, 105, 103, 108, 110],
           weather: [50, 25],
           crop_info: [3, 60, 2],
@@ -113,8 +110,6 @@ const ChatAI = () => {
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        console.error('Chat API Error:', response.status, errorData);
         throw new Error(`Failed to get chat response: ${response.status}`);
       }
 
@@ -132,7 +127,6 @@ const ChatAI = () => {
       
       setMessages(prev => [...prev, botResponse]);
       
-      // Show toast if using cached data
       if (data?.cached_data_used) {
         toast({
           title: "⚡ ใช้ข้อมูลแคช",
@@ -170,12 +164,9 @@ const ChatAI = () => {
   };
 
   const formatMessageContent = (content: string) => {
-    // Format message content for better readability
-    // Replace markdown-style bold with styled spans
     const formattedContent = content
       .split('\n')
       .map((line, index) => {
-        // Check if line is a header (starts with **)
         if (line.trim().startsWith('**') && line.trim().endsWith('**')) {
           const headerText = line.trim().replace(/\*\*/g, '');
           return (
@@ -184,7 +175,6 @@ const ChatAI = () => {
             </div>
           );
         }
-        // Check if line is a bullet point
         else if (line.trim().startsWith('•') || line.trim().startsWith('-')) {
           const bulletText = line.trim().replace(/^[•-]\s*/, '');
           return (
@@ -194,7 +184,6 @@ const ChatAI = () => {
             </div>
           );
         }
-        // Regular line
         else if (line.trim()) {
           return (
             <div key={index} className="mb-2">
@@ -202,7 +191,6 @@ const ChatAI = () => {
             </div>
           );
         }
-        // Empty line for spacing
         else {
           return <div key={index} className="h-2" />;
         }
@@ -213,13 +201,11 @@ const ChatAI = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* MapNavbar is now added in App.tsx */}
-      
-      <div className="max-w-5xl mx-auto p-4 sm:p-6 ">
+      <div className="max-w-5xl mx-auto p-4 sm:p-6">
         {/* Header */}
         <div className="text-center mb-6 sm:mb-8 mt-8">
-          <div className="flex items-center justify-center  mb-1">
-            <div className="relative flex items-center ">
+          <div className="flex items-center justify-center mb-1">
+            <div className="relative flex items-center">
               <img 
                 src="/logo.png" 
                 alt="FarmTime Logo" 
@@ -245,7 +231,7 @@ const ChatAI = () => {
                   <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
                     <MessageCircle className="w-5 h-5" />
                   </div>
-                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white animate-pulse"></div>
+                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white"></div>
                 </div>
                 <div className="flex-1">
                   <span className="font-semibold">Farm AI Assistant</span>
@@ -273,8 +259,8 @@ const ChatAI = () => {
                 </div>
               )}
               
-              {messages.map((message, index) => (
-                <div key={message.id} className={`flex gap-3 animate-in slide-in-from-bottom-2 duration-500 ${message.type === 'user' ? 'justify-end' : 'justify-start'}`} style={{ animationDelay: `${index * 100}ms` }}>
+              {messages.map((message) => (
+                <div key={message.id} className={`flex gap-3 ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
                   {message.type === 'bot' && (
                     <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
                       <Bot className="w-5 h-5 text-white" />
@@ -292,7 +278,6 @@ const ChatAI = () => {
                         ? 'bg-gradient-to-r from-green-500 to-green-600 text-white ml-auto' 
                         : 'bg-white text-gray-800 border border-gray-100'
                     }`}>
-                      {/* ML Model Badge */}
                       {message.type === 'bot' && message.functionCalled && (
                         <div className="flex items-center gap-1 mb-2 pb-2 border-b border-gray-100">
                           <Zap className="w-3 h-3 text-purple-500" />
@@ -304,7 +289,6 @@ const ChatAI = () => {
                         </div>
                       )}
                       
-                      {/* Render with chart if available */}
                       {message.type === 'bot' && message.chartData ? (
                         <ChartMessage 
                           chartData={message.chartData}
@@ -316,10 +300,7 @@ const ChatAI = () => {
                         </div>
                       )}
                       
-                      {/* Function Result Display removed - LLM formats everything now */}
-                      
-                      <div className={`text-xs mt-3 ${message.type === 'user' ? 'text-green-100' : 'text-gray-400'
-                      }`}>
+                      <div className={`text-xs mt-3 ${message.type === 'user' ? 'text-green-100' : 'text-gray-400'}`}>
                         {formatTimestamp(message.timestamp)}
                       </div>
                     </div>
@@ -334,7 +315,7 @@ const ChatAI = () => {
               ))}
               
               {isTyping && (
-                <div className="flex gap-3 justify-start animate-in slide-in-from-bottom-2">
+                <div className="flex gap-3 justify-start">
                   <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
                     <Bot className="w-5 h-5 text-white" />
                   </div>

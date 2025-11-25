@@ -1,0 +1,2 @@
+Best_Model,R2_Score,MAE,RMSE,Train_Samples,Test_Samples,Features,Timestamp
+Gradient Boosting,0.920992299937474,3370.831295374528,7036.001371790133,4980,1246,13,20251125_200830

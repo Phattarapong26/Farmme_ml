@@ -1,0 +1,48 @@
+
+================================================================================
+QUICK REFERENCE GUIDE
+Model A - Personalized Crop Recommendation System
+================================================================================
+
+📁 OUTPUT LOCATION: C:\Users\LightZ\Desktop\Farmme_ml\XD\buildingModel.py\Model_A_Personalized\run_20251125_194122
+
+📊 KEY METRICS:
+   R² Score: 0.9039
+   MAE: 3647.01%
+   RMSE: 8252.62%
+
+📋 FILES GENERATED:
+   1. summary_report.txt         - Full detailed report
+   2. model_performance.csv      - Model metrics (CSV)
+   3. all_recommendations.csv    - All predictions (CSV)
+   4. model_performance.png      - Performance visualization
+   5. top_crops_by_user.png      - User recommendations chart
+   6. seasonal_patterns.png      - Seasonal analysis chart
+   7. quick_reference.txt        - This guide
+
+🎯 HOW TO USE THE RESULTS:
+
+   For Presentations:
+   - Use summary_report.txt for overview
+   - Use PNG charts for visual slides
+   
+   For Analysis:
+   - Use all_recommendations.csv for detailed analysis
+   - Filter by user_name, province, or season
+   
+   For Validation:
+   - Check model_performance.csv for metrics
+   - Compare predictions across different users
+
+👥 TESTED USERS:
+   - Somchai (เชียงใหม่): profit goal
+   - Malee (นครราชสีมา): stability goal
+   - Prasert (กรุงเทพมหานคร): profit goal
+
+📅 TESTED MONTHS:
+   - January, April, July, October
+
+🌱 CROP TYPES:
+   - 50 different crops evaluated
+
+================================================================================

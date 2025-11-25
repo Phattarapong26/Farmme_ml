@@ -1,0 +1,207 @@
+
+================================================================================
+MODEL A - PERSONALIZED CROP RECOMMENDATION SYSTEM
+SUMMARY REPORT
+================================================================================
+
+Run Timestamp: 20251125_195635
+Generated: 2025-11-25 19:56:51
+
+================================================================================
+1. MODEL COMPARISON
+================================================================================
+
+Tested 3 machine learning algorithms:
+
+  Gradient Boosting    | R²: 0.9075 | MAE:  3645.14% | RMSE:  8095.42%
+  Random Forest        | R²: 0.9067 | MAE:  3559.98% | RMSE:  8131.27%
+  XGBoost              | R²: 0.9039 | MAE:  3647.01% | RMSE:  8252.62%
+
+🏆 Best Model: Gradient Boosting
+
+================================================================================
+2. LEARNING CURVE ANALYSIS
+================================================================================
+
+Overfitting Detection (Training vs Validation Gap):
+
+  Random Forest       :
+    Training Score:   0.9710
+    Validation Score: 0.9001
+    Gap:              0.0709 (✗ Overfitting)
+
+  Gradient Boosting   :
+    Training Score:   0.9775
+    Validation Score: 0.8983
+    Gap:              0.0792 (✗ Overfitting)
+
+  XGBoost             :
+    Training Score:   0.9747
+    Validation Score: 0.8987
+    Gap:              0.0760 (✗ Overfitting)
+
+Interpretation:
+  - Gap < 0.02: No overfitting (Good generalization)
+  - Gap 0.02-0.05: Slight overfitting (Acceptable)
+  - Gap > 0.05: Overfitting (Model memorizing training data)
+
+================================================================================
+3. BEST MODEL PERFORMANCE (Gradient Boosting)
+================================================================================
+
+R² Score:  0.9075
+MAE:       3645.14%
+RMSE:      8095.42%
+
+Training Samples: 4,980
+Testing Samples:  1,246
+Features Used:    13
+
+Data Quality Assessment:
+  - Sample Size: ✓ Adequate
+  - Samples per Feature: 383 (Recommended: >20)
+  - Train/Test Split: 80/20 (Standard)
+
+================================================================================
+4. TESTING COVERAGE
+================================================================================
+
+User Profiles Tested:  3
+Months Tested:         4
+Crop Types Evaluated:  50
+Total Predictions:     120
+
+================================================================================
+3. USER PROFILES
+================================================================================
+
+
+User: Somchai
+  - Province: เชียงใหม่
+  - Budget: 50,000 Baht
+  - Land Size: 5 Rai
+  - Water Access: good
+  - Experience: intermediate
+  - Goal: profit
+  - Risk Tolerance: medium
+
+User: Malee
+  - Province: นครราชสีมา
+  - Budget: 30,000 Baht
+  - Land Size: 10 Rai
+  - Water Access: poor
+  - Experience: beginner
+  - Goal: stability
+  - Risk Tolerance: low
+
+User: Prasert
+  - Province: กรุงเทพมหานคร
+  - Budget: 100,000 Baht
+  - Land Size: 3 Rai
+  - Water Access: good
+  - Experience: expert
+  - Goal: profit
+  - Risk Tolerance: high
+
+================================================================================
+4. TOP RECOMMENDATIONS BY USER
+================================================================================
+
+
+Somchai (เชียงใหม่):
+  1. ผักโขม: 24085.54% ROI
+  2. ผักชี: 24085.54% ROI
+  3. ผักชีฝรั่ง: 24085.54% ROI
+  4. ผักโขม: 24069.99% ROI
+  5. ผักชี: 24069.99% ROI
+
+Malee (นครราชสีมา):
+  1. ผักโขม: 28492.24% ROI
+  2. ผักชีฝรั่ง: 28492.24% ROI
+  3. ผักโขม: 28463.75% ROI
+  4. ผักชีฝรั่ง: 28463.75% ROI
+  5. ผักโขม: 28132.73% ROI
+
+Prasert (กรุงเทพมหานคร):
+  1. ผักโขม: 9337.73% ROI
+  2. ผักชี: 9337.73% ROI
+  3. ผักชีฝรั่ง: 9337.73% ROI
+  4. ผักโขม: 9322.18% ROI
+  5. ผักชี: 9322.18% ROI
+
+================================================================================
+5. SEASONAL ANALYSIS
+================================================================================
+
+Average ROI by Season:
+  - Summer: 18233.42%
+  - Winter: 18208.43%
+  - Rainy: 18056.54%
+
+================================================================================
+6. KEY FEATURES
+================================================================================
+
+The personalized recommendation system considers:
+  ✓ Province-specific weather data
+  ✓ Personal budget and land size constraints
+  ✓ Experience level and risk tolerance
+  ✓ Goal-based weighting (profit/stability/sustainability)
+  ✓ Market demand factors
+  ✓ Seasonal suitability
+  ✓ Water availability matching
+  ✓ Investment cost filtering
+
+================================================================================
+7. OUTPUT FILES
+================================================================================
+
+Generated files in: C:\Users\LightZ\Desktop\Farmme_ml\XD\buildingModel.py\Model_A_Personalized\run_20251125_195635
+
+  CSV Files:
+  1. best_model_performance.csv     - Best model metrics
+  2. model_comparison.csv           - All models comparison
+  3. all_recommendations.csv        - Detailed predictions
+  
+  Evaluation Charts:
+  4. model_comparison_metrics.png   - Algorithm comparison (R², MAE, RMSE)
+  5. prediction_vs_actual.png       - Prediction accuracy scatter plots
+  6. residual_analysis.png          - Residual distribution plots
+  7. learning_curves.png            - Overfitting analysis ⭐ NEW
+  8. lstm_training_history.png      - LSTM training curves (if available)
+  
+  Application Charts:
+  9. best_model_performance.png     - Best model metrics
+  10. top_crops_by_user.png         - User recommendations
+  11. seasonal_patterns.png         - Seasonal analysis
+  
+  Reports:
+  12. summary_report.txt            - This report
+  13. quick_reference.txt           - Quick guide
+
+================================================================================
+8. CONCLUSION
+================================================================================
+
+The personalized recommendation system successfully:
+  ✓ Compared 3 machine learning algorithms
+  ✓ Selected best model: Gradient Boosting (R² = 0.9075)
+  ✓ Analyzed learning curves to detect overfitting ⭐ NEW
+  ✓ Generated 120 personalized recommendations
+  ✓ Tested across 3 diverse user profiles
+  ✓ Considered seasonal variations across 4 months
+  ✓ Applied business rules and goal-based weighting
+  ✓ Created comprehensive evaluation charts
+
+Model Reliability:
+  - Training samples: 4,980 (Adequate)
+  - Overfitting status: Random Forest
+  - Cross-validation: 5-fold CV performed
+
+The system is ready for deployment and can provide customized
+crop recommendations based on individual farmer profiles and
+local conditions.
+
+================================================================================
+END OF REPORT
+================================================================================
