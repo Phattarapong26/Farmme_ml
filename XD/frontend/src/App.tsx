@@ -47,7 +47,7 @@ const App = () => {
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <BrowserRouter>
+          <BrowserRouter basename="/Farmme_ml/XD/frontend/dist">
             <Routes>
               {/* Intro page - First time only */}
               <Route 
