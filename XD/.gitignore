@@ -30,8 +30,9 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
-lib64/
+# Python-specific lib directories only (not frontend/lib)
+/lib/
+/lib64/
 parts/
 sdist/
 var/
@@ -144,7 +145,8 @@ dist
 
 # Gatsby files
 .cache/
-public
+# DO NOT ignore frontend/public - it's needed for the app!
+# public  <-- COMMENTED OUT
 
 # vuepress build output
 .vuepress/dist
