@@ -23,7 +23,7 @@ const MapNavbar = () => {
       {/* Logo */}
       <div className="flex-1">
         <img 
-          src="/logo.png" 
+          src="/Farmme_ml/XD/frontend/dist/logo.png" 
           alt="FarmTime Logo" 
           className="h-16 w-auto"
         />

@@ -23,7 +23,7 @@ import {
   Leaf,
 } from 'lucide-react';
 
-const API_BASE = 'http://localhost:8000';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 interface DashboardData {
   success: boolean;
@@ -100,7 +100,7 @@ const DashboardOverview: React.FC = () => {
       );
       if (!response.ok) throw new Error('Failed to fetch dashboard data');
       const data = await response.json();
-      
+
       // Debug: Log new data fields
       console.log('Dashboard Data:', {
         seasonal_recommendations: data.seasonal_recommendations,
@@ -108,7 +108,7 @@ const DashboardOverview: React.FC = () => {
         planting_window: data.planting_window,
         market_trends: data.market_trends,
       });
-      
+
       return data;
     },
     enabled: !!selectedProvince,
@@ -220,7 +220,7 @@ const DashboardOverview: React.FC = () => {
               ))}
             </div>
 
-           
+
 
             {/* Chart Category Tabs */}
             <div className="mb-6">
@@ -284,7 +284,7 @@ const DashboardOverview: React.FC = () => {
                       dataKey="change_percent"
                       xAxisKey="crop_type"
                       yAxisLabel="การเปลี่ยนแปลง (%)"
-                      colors={dashboardData?.market_trends?.map((t: any) => 
+                      colors={dashboardData?.market_trends?.map((t: any) =>
                         t.change_percent > 0 ? '#10b981' : '#ef4444'
                       )}
                       angleLabels
@@ -368,7 +368,7 @@ const DashboardOverview: React.FC = () => {
                       dataKey="volatility"
                       xAxisKey="crop_type"
                       yAxisLabel="ความผันผวน (บาท)"
-                      colors={dashboardData?.price_volatility?.map((v: any) => 
+                      colors={dashboardData?.price_volatility?.map((v: any) =>
                         v.risk_level === 'สูง' ? '#ef4444' : '#10b981'
                       )}
                       angleLabels
@@ -496,7 +496,7 @@ const DashboardOverview: React.FC = () => {
                       dataKey="change_percent"
                       xAxisKey="crop_type"
                       yAxisLabel="การเปลี่ยนแปลง (%)"
-                      colors={dashboardData?.market_trends?.map((t: any) => 
+                      colors={dashboardData?.market_trends?.map((t: any) =>
                         t.change_percent > 0 ? '#10b981' : '#ef4444'
                       )}
                       angleLabels

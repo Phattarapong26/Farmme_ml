@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 // ==================== Types ====================
 
@@ -115,7 +115,7 @@ export const usePlantingSchedule = () => {
       }
 
       const data = await response.json();
-      
+
       // Transform response to match expected format
       const recommendations = data.recommendations?.map((rec: any) => ({
         planting_date: rec.planting_date,
@@ -131,7 +131,7 @@ export const usePlantingSchedule = () => {
       })) || [];
 
       const prices = recommendations.map((r: any) => r.predicted_price);
-      
+
       return {
         success: true,
         data: {
@@ -166,13 +166,13 @@ export const useAvailableCrops = () => {
     queryKey: ['available-crops'],
     queryFn: async (): Promise<{ success: boolean; crops: Crop[]; total: number }> => {
       const response = await fetch(`${API_BASE_URL}/api/v2/forecast/crops`);
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch crops');
       }
-      
+
       const data = await response.json();
-      
+
       // Transform response to match expected format
       const crops = data.crops?.map((crop: any) => ({
         name: crop.crop_type || crop.name,
@@ -181,7 +181,7 @@ export const useAvailableCrops = () => {
         min_price: crop.min_price || 0,
         max_price: crop.max_price || 0
       })) || [];
-      
+
       return {
         success: true,
         crops,
@@ -208,7 +208,7 @@ export const useCompareCrops = () => {
       const requestBody = {
         province: request.province,
         water_availability: "ปานกลาง",
-        budget_level: "กลาง", 
+        budget_level: "กลาง",
         risk_tolerance: "ต่ำ",
         experience_level: "ปานกลาง",
         time_constraint: 90,
@@ -232,9 +232,9 @@ export const useCompareCrops = () => {
       }
 
       const data = await response.json();
-      
+
       // Transform response to match expected format
-      const comparisons = data.recommendations?.filter((rec: any) => 
+      const comparisons = data.recommendations?.filter((rec: any) =>
         request.crop_types.includes(rec.crop_type)
       ).map((rec: any) => {
         const plantingDate = new Date(request.planting_date);
@@ -244,7 +244,7 @@ export const useCompareCrops = () => {
         const expectedRevenue = predictedPrice * expectedYield;
         const estimatedCost = 5000 * (request.planting_area_rai || 10);
         const expectedProfit = expectedRevenue - estimatedCost;
-        
+
         return {
           crop_type: rec.crop_type,
           crop_category: rec.crop_category,
@@ -260,8 +260,8 @@ export const useCompareCrops = () => {
         };
       }) || [];
 
-      const bestChoice = comparisons.length > 0 ? 
-        comparisons.reduce((best: any, current: any) => 
+      const bestChoice = comparisons.length > 0 ?
+        comparisons.reduce((best: any, current: any) =>
           current.roi_percent > best.roi_percent ? current : best
         ).crop_type : null;
 
@@ -289,7 +289,7 @@ export const usePlantingRecommendation = () => {
   return useMutation({
     mutationFn: async (request: LegacyPlantingRecommendationRequest) => {
       console.log('🚀 Sending planting recommendation request:', request);
-      
+
       const response = await fetch(`${API_BASE_URL}/recommend-planting-date`, {
         method: 'POST',
         headers: {
@@ -317,7 +317,7 @@ export const usePlantingRecommendation = () => {
 
       const data = await response.json();
       console.log('✅ Planting recommendation response:', data);
-      
+
       return data;
     },
   });

@@ -144,7 +144,7 @@ const ThailandMap = () => {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch('/UI_Home.html', { cache: 'no-store' });
+        const res = await fetch('/Farmme_ml/XD/frontend/dist/UI_Home.html', { cache: 'no-store' });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const html = await res.text();
         const parser = new DOMParser();

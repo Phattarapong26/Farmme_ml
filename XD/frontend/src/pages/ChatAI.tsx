@@ -8,7 +8,7 @@ import { useUserProfile } from '@/hooks/useUserProfile';
 import { useToast } from '@/hooks/use-toast';
 import ChartMessage from '@/components/chat/ChartMessage';
 
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 interface ChartData {
   type: 'price_forecast';
@@ -61,7 +61,7 @@ const ChatAI = () => {
   useEffect(() => {
     if (hasInitialized.current) return;
     hasInitialized.current = true;
-    
+
     const userName = userProfile?.full_name || user?.username || 'คุณเกษตรกร';
     const welcomeMessage: Message = {
       id: 'welcome',
@@ -69,7 +69,7 @@ const ChatAI = () => {
       content: `สวัสดีครับคุณ${userName}! ยินดีต้อนรับสู่ระบบ AI ผู้ช่วยด้านการเกษตร 🌱\n\n**ผมสามารถช่วยคุณได้ในเรื่อง:**\n\n• 🌤️ วิเคราะห์สภาพอากาศและพยากรณ์อากาศ\n• 🌾 แนะนำการปลูกพืชที่เหมาะสมกับพื้นที่\n• 💧 คำแนะนำการจัดการน้ำและดิน\n• 📊 ทำนายราคาและแนวโน้มตลาด\n• 🐛 การจัดการศัตรูพืชและโรคพืช\n• 📅 วางแผนการเกษตรตามฤดูกาล\n\n**วิธีใช้งาน:**\nเพียงพิมพ์คำถามของคุณ ผมจะตอบด้วยข้อมูลที่เข้าใจง่ายและใช้งานได้จริง!\n\nมีอะไรให้ผมช่วยไหมครับ? 😊`,
       timestamp: new Date()
     };
-    
+
     setMessages([welcomeMessage]);
   }, [userProfile?.full_name, user?.username]);
 
@@ -124,9 +124,9 @@ const ChatAI = () => {
         functionResult: data?.function_result || undefined,
         chartData: data?.chart_data || undefined
       };
-      
+
       setMessages(prev => [...prev, botResponse]);
-      
+
       if (data?.cached_data_used) {
         toast({
           title: "⚡ ใช้ข้อมูลแคช",
@@ -156,10 +156,10 @@ const ChatAI = () => {
   };
 
   const formatTimestamp = (timestamp: Date) => {
-    return timestamp.toLocaleTimeString('th-TH', { 
-      hour: '2-digit', 
+    return timestamp.toLocaleTimeString('th-TH', {
+      hour: '2-digit',
       minute: '2-digit',
-      hour12: false 
+      hour12: false
     });
   };
 
@@ -195,7 +195,7 @@ const ChatAI = () => {
           return <div key={index} className="h-2" />;
         }
       });
-    
+
     return <>{formattedContent}</>;
   };
 
@@ -206,9 +206,9 @@ const ChatAI = () => {
         <div className="text-center mb-6 sm:mb-8 mt-8">
           <div className="flex items-center justify-center mb-1">
             <div className="relative flex items-center">
-              <img 
-                src="/logo.png" 
-                alt="FarmTime Logo" 
+              <img
+                src="/Farmme_ml/XD/frontend/dist/logo.png"
+                alt="FarmTime Logo"
                 className="h-16 w-auto"
               />
               <div className="bg-gradient-to-r from-green-500 to-green-600 text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg inline-flex items-center gap-1">
@@ -258,7 +258,7 @@ const ChatAI = () => {
                   </div>
                 </div>
               )}
-              
+
               {messages.map((message) => (
                 <div key={message.id} className={`flex gap-3 ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
                   {message.type === 'bot' && (
@@ -266,31 +266,31 @@ const ChatAI = () => {
                       <Bot className="w-5 h-5 text-white" />
                     </div>
                   )}
-                  
+
                   <div className={`min-w-0 flex-1 ${message.type === 'user' ? 'order-2 flex justify-end' : ''}`}>
                     {message.type === 'bot' && (
                       <div className="text-xs text-green-600 mb-2 flex items-center gap-1 font-medium">
                         <span>🤖 Farm AI Assistant</span>
                       </div>
                     )}
-                    
-                    <div className={`max-w-[85%] rounded-2xl p-4 shadow-sm transition-all hover:shadow-md ${message.type === 'user' 
-                        ? 'bg-gradient-to-r from-green-500 to-green-600 text-white ml-auto' 
-                        : 'bg-white text-gray-800 border border-gray-100'
-                    }`}>
+
+                    <div className={`max-w-[85%] rounded-2xl p-4 shadow-sm transition-all hover:shadow-md ${message.type === 'user'
+                      ? 'bg-gradient-to-r from-green-500 to-green-600 text-white ml-auto'
+                      : 'bg-white text-gray-800 border border-gray-100'
+                      }`}>
                       {message.type === 'bot' && message.functionCalled && (
                         <div className="flex items-center gap-1 mb-2 pb-2 border-b border-gray-100">
                           <Zap className="w-3 h-3 text-purple-500" />
                           <span className="text-xs text-purple-600 font-medium">ใช้ ML Model</span>
                           <span className="text-xs text-gray-400">
-                            ({message.functionCalled === 'get_price_prediction' ? 'ทำนายราคา' : 
+                            ({message.functionCalled === 'get_price_prediction' ? 'ทำนายราคา' :
                               message.functionCalled === 'get_crop_recommendations' ? 'แนะนำพืช' : 'จัดการน้ำ'})
                           </span>
                         </div>
                       )}
-                      
+
                       {message.type === 'bot' && message.chartData ? (
-                        <ChartMessage 
+                        <ChartMessage
                           chartData={message.chartData}
                           textResponse={message.content}
                         />
@@ -299,7 +299,7 @@ const ChatAI = () => {
                           {formatMessageContent(message.content)}
                         </div>
                       )}
-                      
+
                       <div className={`text-xs mt-3 ${message.type === 'user' ? 'text-green-100' : 'text-gray-400'}`}>
                         {formatTimestamp(message.timestamp)}
                       </div>
@@ -313,7 +313,7 @@ const ChatAI = () => {
                   )}
                 </div>
               ))}
-              
+
               {isTyping && (
                 <div className="flex gap-3 justify-start">
                   <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
@@ -328,7 +328,7 @@ const ChatAI = () => {
                   </div>
                 </div>
               )}
-              
+
               <div ref={messagesEndRef} />
             </div>
 
@@ -351,7 +351,7 @@ const ChatAI = () => {
                     </div>
                   )}
                 </div>
-                <Button 
+                <Button
                   onClick={handleSendMessage}
                   disabled={!inputMessage.trim() || isTyping}
                   className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-3 rounded-xl shadow-lg transition-all hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
@@ -363,7 +363,7 @@ const ChatAI = () => {
                   )}
                 </Button>
               </div>
-              
+
               {/* Quick suggestions */}
               <div className="flex flex-wrap gap-2 mt-3">
                 {[

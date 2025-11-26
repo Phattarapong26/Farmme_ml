@@ -1,21 +1,21 @@
 import { useQuery } from '@tanstack/react-query';
 
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 export const useCropData = (province?: string) => {
   return useQuery({
     queryKey: ['cropData', province],
     queryFn: async () => {
       if (!province) return [];
-      
+
       // Use real province prices endpoint
       const url = `${API_BASE_URL}/provinces/${encodeURIComponent(province)}/prices`;
-      
+
       const response = await fetch(url);
       if (!response.ok) throw new Error('Failed to fetch crop data');
-      
+
       const result = await response.json();
-      
+
       // Return real crop price data from database
       return result.prices || [];
     },

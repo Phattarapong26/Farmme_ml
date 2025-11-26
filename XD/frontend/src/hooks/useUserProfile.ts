@@ -1,23 +1,23 @@
 import { useQuery } from '@tanstack/react-query';
 
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 export const useUserProfile = (userId?: string | number) => {
   return useQuery({
     queryKey: ['userProfile', userId],
     queryFn: async () => {
       if (!userId) return null;
-      
+
       try {
         // Fetch real user data from backend
         const response = await fetch(`${API_BASE_URL}/auth/user/${userId}`);
-        
+
         if (!response.ok) {
           throw new Error('Failed to fetch user profile');
         }
-        
+
         const data = await response.json();
-        
+
         if (data.success && data.user) {
           return {
             user_id: data.user.id,
@@ -37,7 +37,7 @@ export const useUserProfile = (userId?: string | number) => {
             soil_type: data.user.soil_type || 'ดินร่วน'
           };
         }
-        
+
         return null;
       } catch (error) {
         console.error('Error fetching user profile:', error);
