@@ -2,10 +2,12 @@
 Model B Wrapper - Planting Window Prediction
 Binary Classification: Is this a good planting window?
 
-✅ FIXED VERSION:
+✅ PRODUCTION VERSION with REAL DATA:
 - No data leakage (rule-based target)
 - Complete features (17 features)
-- Weather integration (4 features)
+- Real weather data from dataset (30 days historical)
+- All crops from crop_characteristics.csv
+- All provinces from cultivation.csv
 - Time-based validation
 
 Usage:
@@ -98,24 +100,71 @@ class ModelBWrapper:
             raise
     
     def _load_crop_characteristics(self) -> Dict[str, Dict[str, Any]]:
-        """Load crop characteristics from database or default values"""
-        # Default crop characteristics
-        # In production, load from database
-        return {
-            'พริก': {'growth_days': 90, 'soil_preference': 'loam', 'seasonal_type': 'all_season'},
-            'มะเขือเทศ': {'growth_days': 75, 'soil_preference': 'loam', 'seasonal_type': 'rainy'},
-            'ข้าว': {'growth_days': 120, 'soil_preference': 'clay', 'seasonal_type': 'rainy'},
-            'ข้าวโพด': {'growth_days': 90, 'soil_preference': 'loam', 'seasonal_type': 'all_season'},
-            'มันสำปะหลัง': {'growth_days': 240, 'soil_preference': 'sandy', 'seasonal_type': 'all_season'},
-        }
+        """Load crop characteristics from CSV dataset"""
+        try:
+            # Load from dataset
+            dataset_path = Path(__file__).parent.parent / 'buildingModel.py' / 'Dataset' / 'crop_characteristics.csv'
+            df = pd.read_csv(dataset_path)
+            
+            # Create mapping
+            crop_chars = {}
+            for _, row in df.iterrows():
+                crop_type = row['crop_type']
+                
+                # Map soil preference to English
+                soil_map = {
+                    'ดินร่วน': 'loam',
+                    'ดินเหนียว': 'clay',
+                    'ดินทราย': 'sandy',
+                    'ดินร่วนปนทราย': 'loam'
+                }
+                soil_pref = soil_map.get(row['soil_preference'], 'loam')
+                
+                # Map seasonal type to English
+                seasonal_map = {
+                    'ได้ทุกฤดู': 'all_season',
+                    'ฤดูฝน': 'rainy',
+                    'ฤดูร้อน': 'summer',
+                    'หนาว': 'winter'
+                }
+                seasonal = seasonal_map.get(row['seasonal_type'], 'all_season')
+                
+                crop_chars[crop_type] = {
+                    'growth_days': int(row['growth_days']),
+                    'soil_preference': soil_pref,
+                    'seasonal_type': seasonal
+                }
+            
+            logger.info(f"✅ Loaded {len(crop_chars)} crops from dataset")
+            return crop_chars
+            
+        except Exception as e:
+            logger.warning(f"⚠️ Failed to load crop characteristics from dataset: {e}")
+            # Fallback to default
+            return {
+                'พริก': {'growth_days': 90, 'soil_preference': 'loam', 'seasonal_type': 'all_season'},
+                'มะเขือเทศ': {'growth_days': 75, 'soil_preference': 'loam', 'seasonal_type': 'rainy'},
+            }
     
     def _create_province_mapping(self) -> Dict[str, int]:
-        """Create province to encoded mapping"""
-        provinces = [
-            'กรุงเทพมหานคร', 'เชียงใหม่', 'เชียงราย', 'นครราชสีมา', 'ขอนแก่น',
-            'อุบลราชธานี', 'สุราษฎร์ธานี', 'สงขลา', 'ภูเก็ต', 'ชลบุรี'
-        ]
-        return {province: idx for idx, province in enumerate(provinces)}
+        """Create province to encoded mapping from cultivation dataset"""
+        try:
+            # Load from dataset
+            dataset_path = Path(__file__).parent.parent / 'buildingModel.py' / 'Dataset' / 'cultivation.csv'
+            df = pd.read_csv(dataset_path)
+            
+            # Get unique provinces
+            provinces = sorted(df['province'].unique())
+            province_mapping = {province: idx for idx, province in enumerate(provinces)}
+            
+            logger.info(f"✅ Loaded {len(provinces)} provinces from dataset")
+            return province_mapping
+            
+        except Exception as e:
+            logger.warning(f"⚠️ Failed to load provinces from dataset: {e}")
+            # Fallback to default
+            provinces = ['กรุงเทพมหานคร', 'เชียงใหม่', 'เชียงราย']
+            return {province: idx for idx, province in enumerate(provinces)}
     
     def _create_crop_type_mapping(self) -> Dict[str, int]:
         """Create crop type to encoded mapping"""
@@ -153,7 +202,7 @@ class ModelBWrapper:
         db_session = None
     ) -> Dict[str, float]:
         """
-        Get weather features from 30 days before planting
+        Get weather features from 30 days before planting from dataset
         
         Args:
             province: Province name
@@ -163,34 +212,69 @@ class ModelBWrapper:
         Returns:
             Dict with weather features
         """
-        # In production, query from database
-        # For now, use default values based on season
-        
-        month = planting_date.month
-        season = self._get_season(month)
-        
-        # Default weather patterns by season
-        if season == 'rainy':
-            return {
-                'avg_temp_prev_30d': 28.0,
-                'avg_rainfall_prev_30d': 150.0,
-                'total_rainfall_prev_30d': 4500.0,
-                'rainy_days_prev_30d': 20.0
-            }
-        elif season == 'summer':
-            return {
-                'avg_temp_prev_30d': 32.0,
-                'avg_rainfall_prev_30d': 50.0,
-                'total_rainfall_prev_30d': 1500.0,
-                'rainy_days_prev_30d': 8.0
-            }
-        else:  # winter
-            return {
-                'avg_temp_prev_30d': 25.0,
-                'avg_rainfall_prev_30d': 20.0,
-                'total_rainfall_prev_30d': 600.0,
-                'rainy_days_prev_30d': 5.0
-            }
+        try:
+            # Load weather dataset
+            dataset_path = Path(__file__).parent.parent / 'buildingModel.py' / 'Dataset' / 'weather.csv'
+            df = pd.read_csv(dataset_path)
+            df['date'] = pd.to_datetime(df['date'])
+            
+            # Calculate date range (30 days before planting)
+            end_date = planting_date - timedelta(days=1)
+            start_date = end_date - timedelta(days=29)
+            
+            # Filter data
+            mask = (
+                (df['province'] == province) &
+                (df['date'] >= start_date) &
+                (df['date'] <= end_date)
+            )
+            weather_data = df[mask]
+            
+            if len(weather_data) > 0:
+                # Calculate features from actual data
+                avg_temp = weather_data['temperature_celsius'].mean()
+                total_rainfall = weather_data['rainfall_mm'].sum()
+                avg_rainfall = weather_data['rainfall_mm'].mean()
+                rainy_days = (weather_data['rainfall_mm'] > 0.1).sum()
+                
+                return {
+                    'avg_temp_prev_30d': float(avg_temp),
+                    'avg_rainfall_prev_30d': float(avg_rainfall),
+                    'total_rainfall_prev_30d': float(total_rainfall),
+                    'rainy_days_prev_30d': float(rainy_days)
+                }
+            else:
+                # No data found, use seasonal defaults
+                raise ValueError(f"No weather data for {province} around {planting_date}")
+                
+        except Exception as e:
+            logger.debug(f"⚠️ No historical weather data for {province} on {planting_date.date()}, using seasonal defaults")
+            
+            # Fallback to seasonal defaults
+            month = planting_date.month
+            season = self._get_season(month)
+            
+            if season == 'rainy':
+                return {
+                    'avg_temp_prev_30d': 28.0,
+                    'avg_rainfall_prev_30d': 150.0,
+                    'total_rainfall_prev_30d': 4500.0,
+                    'rainy_days_prev_30d': 20.0
+                }
+            elif season == 'summer':
+                return {
+                    'avg_temp_prev_30d': 32.0,
+                    'avg_rainfall_prev_30d': 50.0,
+                    'total_rainfall_prev_30d': 1500.0,
+                    'rainy_days_prev_30d': 8.0
+                }
+            else:  # winter
+                return {
+                    'avg_temp_prev_30d': 25.0,
+                    'avg_rainfall_prev_30d': 20.0,
+                    'total_rainfall_prev_30d': 600.0,
+                    'rainy_days_prev_30d': 5.0
+                }
     
     def prepare_features(
         self,
