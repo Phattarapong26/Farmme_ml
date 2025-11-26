@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-const API_BASE = 'http://localhost:8000/api/v2/forecast';
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000') + '/api/v2/forecast';
 
 interface ForecastProvincesResponse {
   success: boolean;
@@ -58,7 +58,7 @@ export const useForecastCrops = (province?: string) => {
   return useQuery<ForecastCropsResponse>({
     queryKey: ['forecast-crops', province],
     queryFn: async () => {
-      const url = province 
+      const url = province
         ? `${API_BASE}/crops?province=${encodeURIComponent(province)}`
         : `${API_BASE}/crops`;
       const response = await fetch(url);
@@ -82,13 +82,13 @@ export const usePriceHistory = (
       if (!province) {
         throw new Error('Province is required');
       }
-      
+
       const params = new URLSearchParams({
         province,
         crop_type: cropType || '', // Allow empty crop_type for weather data
         days: days.toString()
       });
-      
+
       const response = await fetch(`${API_BASE}/price-history?${params}`);
       if (!response.ok) throw new Error('Failed to fetch price history');
       return response.json();

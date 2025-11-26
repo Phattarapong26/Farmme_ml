@@ -8,26 +8,26 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useProvinces } from '@/hooks/useProvinces';
 import { validateProfileData, VALID_SOIL_TYPES } from '@/utils/validation';
 
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 const LocalAuth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
-  
+
   // Load provinces from API
   const { provinces, loading: provincesLoading, error: provincesError } = useProvinces();
-  
+
   // Login form
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
-  
+
   // Register form - Basic info
   const [registerEmail, setRegisterEmail] = useState('');
   const [registerUsername, setRegisterUsername] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
   const [registerFullName, setRegisterFullName] = useState('');
-  
+
   // Register form - Profile info
   const [province, setProvince] = useState('');
   const [waterAvailability, setWaterAvailability] = useState('');
@@ -85,7 +85,7 @@ const LocalAuth = () => {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Client-side validation
     const profileData = {
       province: province || undefined,
@@ -94,7 +94,7 @@ const LocalAuth = () => {
       budget_level: budgetLevel || undefined,
       risk_tolerance: riskTolerance || undefined
     };
-    
+
     const validation = validateProfileData(profileData, provinces);
     if (!validation.isValid) {
       toast({
@@ -104,7 +104,7 @@ const LocalAuth = () => {
       });
       return;
     }
-    
+
     setLoading(true);
 
     try {
@@ -164,9 +164,9 @@ const LocalAuth = () => {
         <CardHeader className="text-center pb-4 pt-10">
           <div className="flex justify-center mb-6">
             <div className=" p-4 ">
-              <img 
-                src="/logo.png" 
-                alt="FarmMe Logo" 
+              <img
+                src="/Farmme_ml/XD/frontend/dist/logo.png"
+                alt="FarmMe Logo"
                 className="h-16 w-auto"
               />
             </div>
@@ -175,13 +175,13 @@ const LocalAuth = () => {
         <CardContent className="px-8 pb-8">
           <Tabs defaultValue="login" className="w-full">
             <TabsList className="grid w-full grid-cols-2 bg-gray-100 p-1.5 rounded-2xl mb-6">
-              <TabsTrigger 
-                value="login" 
+              <TabsTrigger
+                value="login"
                 className="data-[state=active]:bg-white data-[state=active]:shadow-md rounded-xl transition-all duration-200"
               >
                 เข้าสู่ระบบ
               </TabsTrigger>
-              <TabsTrigger 
+              <TabsTrigger
                 value="register"
                 className="data-[state=active]:bg-white data-[state=active]:shadow-md rounded-xl transition-all duration-200"
               >
@@ -218,8 +218,8 @@ const LocalAuth = () => {
                     className="rounded-2xl border-gray-200 focus:border-emerald-400 focus:ring-emerald-400 h-12"
                   />
                 </div>
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   className="w-full bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-medium h-12 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-200 mt-6"
                   disabled={loading}
                 >
@@ -275,11 +275,11 @@ const LocalAuth = () => {
                     className="rounded-2xl h-11"
                   />
                 </div>
-                
+
                 {/* Profile Information */}
                 <div className="pt-3 mt-3 border-t border-gray-200">
                   <p className="text-xs font-medium text-gray-500 mb-3">ข้อมูลเพิ่มเติม (ไม่บังคับ)</p>
-                  
+
                   <div className="space-y-2.5">
                     <div className="space-y-1.5">
                       <label className="text-xs font-medium text-gray-600">จังหวัด</label>
@@ -288,7 +288,7 @@ const LocalAuth = () => {
                           กำลังโหลด...
                         </div>
                       ) : (
-                        <select 
+                        <select
                           value={province}
                           onChange={(e) => setProvince(e.target.value)}
                           className="w-full px-3 py-2 border rounded-2xl text-sm h-11 bg-white"
@@ -300,10 +300,10 @@ const LocalAuth = () => {
                         </select>
                       )}
                     </div>
-                    
+
                     <div className="space-y-1.5">
                       <label className="text-xs font-medium text-gray-600">ประเภทดิน</label>
-                      <select 
+                      <select
                         value={soilType}
                         onChange={(e) => setSoilType(e.target.value)}
                         className="w-full px-3 py-2 border rounded-2xl text-sm h-11 bg-white"
@@ -314,10 +314,10 @@ const LocalAuth = () => {
                         ))}
                       </select>
                     </div>
-                    
+
                     <div className="space-y-1.5">
                       <label className="text-xs font-medium text-gray-600">แหล่งน้ำ</label>
-                      <select 
+                      <select
                         value={waterAvailability}
                         onChange={(e) => setWaterAvailability(e.target.value)}
                         className="w-full px-3 py-2 border rounded-2xl text-sm h-11 bg-white"
@@ -328,10 +328,10 @@ const LocalAuth = () => {
                         <option value="ต่ำ">ต่ำ</option>
                       </select>
                     </div>
-                    
+
                     <div className="space-y-1.5">
                       <label className="text-xs font-medium text-gray-600">งบประมาณ</label>
-                      <select 
+                      <select
                         value={budgetLevel}
                         onChange={(e) => setBudgetLevel(e.target.value)}
                         className="w-full px-3 py-2 border rounded-2xl text-sm h-11 bg-white"
@@ -342,10 +342,10 @@ const LocalAuth = () => {
                         <option value="ต่ำ">ต่ำ</option>
                       </select>
                     </div>
-                    
+
                     <div className="space-y-1.5">
                       <label className="text-xs font-medium text-gray-600">ความเสี่ยง</label>
-                      <select 
+                      <select
                         value={riskTolerance}
                         onChange={(e) => setRiskTolerance(e.target.value)}
                         className="w-full px-3 py-2 border rounded-2xl text-sm h-11 bg-white"
@@ -356,7 +356,7 @@ const LocalAuth = () => {
                         <option value="ต่ำ">ต่ำ</option>
                       </select>
                     </div>
-                    
+
                     <div className="space-y-1.5">
                       <label className="text-xs font-medium text-gray-600">พืชที่มีประสบการณ์</label>
                       <Input
@@ -367,7 +367,7 @@ const LocalAuth = () => {
                         className="text-sm rounded-2xl h-11"
                       />
                     </div>
-                    
+
                     <div className="space-y-1.5">
                       <label className="text-xs font-medium text-gray-600">ระยะเวลา (เดือน)</label>
                       <Input
@@ -378,10 +378,10 @@ const LocalAuth = () => {
                         className="text-sm rounded-2xl h-11"
                       />
                     </div>
-                    
+
                     <div className="space-y-1.5">
                       <label className="text-xs font-medium text-gray-600">ความต้องการ</label>
-                      <select 
+                      <select
                         value={preference}
                         onChange={(e) => setPreference(e.target.value)}
                         className="w-full px-3 py-2 border rounded-2xl text-sm h-11 bg-white"
@@ -394,9 +394,9 @@ const LocalAuth = () => {
                     </div>
                   </div>
                 </div>
-                
-                <Button 
-                  type="submit" 
+
+                <Button
+                  type="submit"
                   className="w-full bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-medium h-12 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-200 mt-4"
                   disabled={loading}
                 >
@@ -407,7 +407,7 @@ const LocalAuth = () => {
           </Tabs>
         </CardContent>
       </Card>
-      
+
       <style>{`
         .custom-scrollbar::-webkit-scrollbar {
           width: 5px;

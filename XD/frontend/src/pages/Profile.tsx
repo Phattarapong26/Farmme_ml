@@ -10,20 +10,20 @@ import { User, Mail, Lock, Save, AlertCircle, CheckCircle, MapPin } from 'lucide
 import MapNavbar from '@/components/MapNavbar';
 import { validateProfileData, VALID_SOIL_TYPES, VALID_WATER_LEVELS, VALID_BUDGET_LEVELS, VALID_RISK_LEVELS } from '@/utils/validation';
 
-const API_BASE = 'http://localhost:8000';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 const Profile = () => {
   const { user } = useAuth();
   const { provinces, loading: provincesLoading, error: provincesError } = useProvinces();
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
-  
+
   // Form states
   const [email, setEmail] = useState(user?.email || '');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  
+
   // Profile data states
   const [profileData, setProfileData] = useState({
     full_name: '',
@@ -41,11 +41,11 @@ const Profile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       if (!user?.id) return;
-      
+
       try {
         const response = await fetch(`${API_BASE}/api/user/profile/${user.id}`);
         const data = await response.json();
-        
+
         if (data.success) {
           setProfileData({
             full_name: data.user.full_name || '',
@@ -63,7 +63,7 @@ const Profile = () => {
         console.error('Error fetching profile:', error);
       }
     };
-    
+
     fetchProfile();
   }, [user?.id]);
 
@@ -81,21 +81,21 @@ const Profile = () => {
           new_email: email
         })
       });
-      
+
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.detail || 'เกิดข้อผิดพลาด');
       }
-      
-      setMessage({ 
-        type: 'success', 
-        text: 'อีเมลถูกอัพเดทเรียบร้อยแล้ว!' 
+
+      setMessage({
+        type: 'success',
+        text: 'อีเมลถูกอัพเดทเรียบร้อยแล้ว!'
       });
     } catch (error: any) {
-      setMessage({ 
-        type: 'error', 
-        text: error.message || 'เกิดข้อผิดพลาดในการอัพเดทอีเมล' 
+      setMessage({
+        type: 'error',
+        text: error.message || 'เกิดข้อผิดพลาดในการอัพเดทอีเมล'
       });
     } finally {
       setIsLoading(false);
@@ -129,21 +129,21 @@ const Profile = () => {
           new_password: newPassword
         })
       });
-      
+
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.detail || 'เกิดข้อผิดพลาด');
       }
-      
+
       setMessage({ type: 'success', text: 'รหัสผ่านถูกเปลี่ยนเรียบร้อยแล้ว!' });
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
     } catch (error: any) {
-      setMessage({ 
-        type: 'error', 
-        text: error.message || 'เกิดข้อผิดพลาดในการเปลี่ยนรหัสผ่าน' 
+      setMessage({
+        type: 'error',
+        text: error.message || 'เกิดข้อผิดพลาดในการเปลี่ยนรหัสผ่าน'
       });
     } finally {
       setIsLoading(false);
@@ -157,8 +157,8 @@ const Profile = () => {
     // Client-side validation
     const validation = validateProfileData(profileData, provinces);
     if (!validation.isValid) {
-      setMessage({ 
-        type: 'error', 
+      setMessage({
+        type: 'error',
         text: validation.errors.join(', ')
       });
       return;
@@ -176,18 +176,18 @@ const Profile = () => {
           time_constraint: profileData.time_constraint || null
         })
       });
-      
+
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.detail || 'เกิดข้อผิดพลาด');
       }
-      
+
       setMessage({ type: 'success', text: 'อัพเดทข้อมูลส่วนตัวเรียบร้อยแล้ว!' });
     } catch (error: any) {
-      setMessage({ 
-        type: 'error', 
-        text: error.message || 'เกิดข้อผิดพลาดในการอัพเดทข้อมูล' 
+      setMessage({
+        type: 'error',
+        text: error.message || 'เกิดข้อผิดพลาดในการอัพเดทข้อมูล'
       });
     } finally {
       setIsLoading(false);
@@ -213,7 +213,7 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-white">
       <MapNavbar />
-      
+
       <div className="container max-w-4xl mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">ข้อมูลส่วนตัว</h1>
@@ -253,7 +253,7 @@ const Profile = () => {
                     <Input
                       id="full_name"
                       value={profileData.full_name}
-                      onChange={(e) => setProfileData({...profileData, full_name: e.target.value})}
+                      onChange={(e) => setProfileData({ ...profileData, full_name: e.target.value })}
                       placeholder="ชื่อ-นามสกุล"
                     />
                   </div>
@@ -275,7 +275,7 @@ const Profile = () => {
                       <select
                         id="province"
                         value={profileData.province}
-                        onChange={(e) => setProfileData({...profileData, province: e.target.value})}
+                        onChange={(e) => setProfileData({ ...profileData, province: e.target.value })}
                         className="w-full p-2 border rounded-md"
                       >
                         <option value="">เลือกจังหวัด</option>
@@ -294,7 +294,7 @@ const Profile = () => {
                     <select
                       id="water"
                       value={profileData.water_availability}
-                      onChange={(e) => setProfileData({...profileData, water_availability: e.target.value})}
+                      onChange={(e) => setProfileData({ ...profileData, water_availability: e.target.value })}
                       className="w-full p-2 border rounded-md"
                     >
                       <option value="">เลือก...</option>
@@ -309,7 +309,7 @@ const Profile = () => {
                     <select
                       id="budget"
                       value={profileData.budget_level}
-                      onChange={(e) => setProfileData({...profileData, budget_level: e.target.value})}
+                      onChange={(e) => setProfileData({ ...profileData, budget_level: e.target.value })}
                       className="w-full p-2 border rounded-md"
                     >
                       <option value="">เลือก...</option>
@@ -324,7 +324,7 @@ const Profile = () => {
                     <select
                       id="soil"
                       value={profileData.soil_type}
-                      onChange={(e) => setProfileData({...profileData, soil_type: e.target.value})}
+                      onChange={(e) => setProfileData({ ...profileData, soil_type: e.target.value })}
                       className="w-full p-2 border rounded-md"
                     >
                       <option value="">เลือก...</option>
@@ -339,7 +339,7 @@ const Profile = () => {
                     <select
                       id="risk"
                       value={profileData.risk_tolerance}
-                      onChange={(e) => setProfileData({...profileData, risk_tolerance: e.target.value})}
+                      onChange={(e) => setProfileData({ ...profileData, risk_tolerance: e.target.value })}
                       className="w-full p-2 border rounded-md"
                     >
                       <option value="">เลือก...</option>
@@ -354,7 +354,7 @@ const Profile = () => {
                     <Input
                       id="experience"
                       value={profileData.experience_crops}
-                      onChange={(e) => setProfileData({...profileData, experience_crops: e.target.value})}
+                      onChange={(e) => setProfileData({ ...profileData, experience_crops: e.target.value })}
                       placeholder="เช่น ข้าว, พริก, มะเขือเทศ (คั่นด้วยจุลภาค)"
                     />
                   </div>
@@ -365,7 +365,7 @@ const Profile = () => {
                       id="time"
                       type="number"
                       value={profileData.time_constraint || ''}
-                      onChange={(e) => setProfileData({...profileData, time_constraint: parseInt(e.target.value) || 0})}
+                      onChange={(e) => setProfileData({ ...profileData, time_constraint: parseInt(e.target.value) || 0 })}
                       placeholder="เช่น 20"
                     />
                   </div>
@@ -375,7 +375,7 @@ const Profile = () => {
                     <select
                       id="preference"
                       value={profileData.preference}
-                      onChange={(e) => setProfileData({...profileData, preference: e.target.value})}
+                      onChange={(e) => setProfileData({ ...profileData, preference: e.target.value })}
                       className="w-full p-2 border rounded-md"
                     >
                       <option value="">เลือก...</option>
@@ -386,9 +386,9 @@ const Profile = () => {
                     </select>
                   </div>
                 </div>
-                
-                <Button 
-                  type="submit" 
+
+                <Button
+                  type="submit"
                   disabled={isLoading}
                   className="bg-emerald-600 hover:bg-emerald-700"
                 >
@@ -426,9 +426,9 @@ const Profile = () => {
                     อีเมลปัจจุบัน: {user.email}
                   </p>
                 </div>
-                
-                <Button 
-                  type="submit" 
+
+                <Button
+                  type="submit"
                   disabled={isLoading || email === user.email}
                   className="bg-emerald-600 hover:bg-emerald-700"
                 >
@@ -479,8 +479,8 @@ const Profile = () => {
                 </div>
 
                 <div className="pt-2">
-                  <Button 
-                    type="submit" 
+                  <Button
+                    type="submit"
                     disabled={isLoading || !newPassword || !confirmPassword}
                     className="bg-emerald-600 hover:bg-emerald-700"
                   >

@@ -50,17 +50,17 @@ const App = () => {
           <BrowserRouter basename="/Farmme_ml/XD/frontend/dist">
             <Routes>
               {/* Intro page - First time only */}
-              <Route 
-                path="/intro" 
-                element={hasSeenIntro ? <Navigate to="/" replace /> : <Intro />} 
+              <Route
+                path="/intro"
+                element={hasSeenIntro ? <Navigate to="/" replace /> : <Intro />}
               />
-              
+
               {/* Auth page - No navbar, no protection */}
               <Route path="/auth" element={<LocalAuth />} />
-              
+
               {/* Debug route to reset intro */}
-              <Route 
-                path="/reset-intro" 
+              <Route
+                path="/reset-intro"
                 element={
                   <div className="flex flex-col items-center justify-center h-screen bg-gray-50">
                     <h1 className="text-2xl font-bold mb-4">Reset Intro</h1>
@@ -74,12 +74,12 @@ const App = () => {
                       Reset & Show Intro
                     </button>
                   </div>
-                } 
+                }
               />
-              
+
               {/* Root - Map page (no login required) */}
-              <Route 
-                path="/" 
+              <Route
+                path="/"
                 element={
                   hasSeenIntro ? (
                     <>
@@ -89,9 +89,9 @@ const App = () => {
                   ) : (
                     <Navigate to="/intro" replace />
                   )
-                } 
+                }
               />
-              
+
               {/* Protected routes with MapNavbar */}
               <Route path="/map" element={
                 <ProtectedRoute>
@@ -99,41 +99,41 @@ const App = () => {
                   <Map />
                 </ProtectedRoute>
               } />
-              
+
               <Route path="/overview" element={
                 <ProtectedRoute>
                   <MapNavbar />
                   <DashboardOverview />
                 </ProtectedRoute>
               } />
-              
+
               <Route path="/forecast" element={
                 <ProtectedRoute>
                   <MapNavbar />
                   <Forecast />
                 </ProtectedRoute>
               } />
-              
+
               <Route path="/chatai" element={
                 <ProtectedRoute>
                   <MapNavbar />
                   <ChatAI />
                 </ProtectedRoute>
               } />
-              
+
               <Route path="/planting-schedule" element={
                 <ProtectedRoute>
                   <MapNavbar />
                   <PlantingSchedule />
                 </ProtectedRoute>
               } />
-              
+
               <Route path="/profile" element={
                 <ProtectedRoute>
                   <Profile />
                 </ProtectedRoute>
               } />
-              
+
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={
                 <>

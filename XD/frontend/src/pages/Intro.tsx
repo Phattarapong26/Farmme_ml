@@ -85,7 +85,7 @@ export default function IntroPage() {
             transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
             className="flex items-center justify-center"
           >
-            <img src="/logo.png" alt="FarmMe Logo" className="max-w-full h-auto" style={{ maxHeight: '40vh' }} />
+            <img src="/Farmme_ml/XD/frontend/dist/logo.png" alt="FarmMe Logo" className="max-w-full h-auto" style={{ maxHeight: '40vh' }} />
           </motion.div>
         )}
       </AnimatePresence>
