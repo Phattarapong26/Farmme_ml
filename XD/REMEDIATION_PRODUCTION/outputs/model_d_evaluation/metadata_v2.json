@@ -1,0 +1,44 @@
+{
+  "model_name": "Model D V2 - Harvest Decision Engine",
+  "version": "2.0",
+  "algorithm": "Thompson Sampling (Pure, No \u03b5-greedy)",
+  "fixes": [
+    "No double training",
+    "Removed \u03b5-greedy",
+    "Simplified reward = profit_ratio",
+    "Added noise to simulator",
+    "Added posterior decay",
+    "Fixed scipy import"
+  ],
+  "evaluation_type": "harvest_decision",
+  "timestamp": "2025-11-27T20:12:53.502968",
+  "metrics": {
+    "accuracy": 0.4064,
+    "profit_efficiency": 0.9346864864027001,
+    "total_profit": 242522069.7736413,
+    "optimal_profit": 259468894.9735742,
+    "correct_decisions": 2032,
+    "total_scenarios": 5000
+  },
+  "posteriors": {
+    "Harvest Now": {
+      "alpha": 199.99999935639997,
+      "beta": 1.3043787909937144e-11,
+      "mean": 0.9999999999999347,
+      "variance": 3.24472338151134e-16
+    },
+    "Wait 3 Days": {
+      "alpha": 5.616989914984073e-07,
+      "beta": 1.3043787909937144e-11,
+      "mean": 0.9999767785144513,
+      "variance": 2.3220933267840238e-05
+    },
+    "Wait 7 Days": {
+      "alpha": 7.933115686559976e-08,
+      "beta": 1.3043787909937144e-11,
+      "mean": 0.9998356050246583,
+      "variance": 0.00016436793659209601
+    }
+  },
+  "decay_factor": 0.995
+}

@@ -1,0 +1,35 @@
+{
+  "model_name": "Model D V3 - Harvest Decision Engine",
+  "version": "3.0",
+  "algorithm": "Thompson Sampling (Continuous Reward)",
+  "timestamp": "2025-11-27T20:21:06.236842",
+  "metrics": {
+    "accuracy": 0.7482,
+    "profit_efficiency": 0.9950672587908821,
+    "total_profit": 256271285.28601143,
+    "optimal_profit": 257541671.70308635,
+    "correct_decisions": 3741,
+    "total_scenarios": 5000
+  },
+  "posteriors": {
+    "Harvest Now": {
+      "alpha": 92.15643219631875,
+      "beta": 0.5221185344978412,
+      "mean": 0.9943663498147017,
+      "variance": 5.9799304399840195e-05
+    },
+    "Wait 3 Days": {
+      "alpha": 57.30998291755101,
+      "beta": 0.513871136321624,
+      "mean": 0.9911131635078687,
+      "variance": 0.00014973280433524166
+    },
+    "Wait 7 Days": {
+      "alpha": 48.85869798516055,
+      "beta": 0.6388972276195488,
+      "mean": 0.987092358227242,
+      "variance": 0.0002523097288680322
+    }
+  },
+  "decay_factor": 0.995
+}
