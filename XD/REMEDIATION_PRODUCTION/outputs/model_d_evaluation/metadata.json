@@ -1,0 +1,32 @@
+{
+  "model_name": "Model D - Harvest Decision Engine",
+  "algorithm": "Thompson Sampling (Contextual Bandit)",
+  "evaluation_type": "harvest_decision",
+  "timestamp": "2025-11-26T16:48:59.082102",
+  "metrics": {
+    "accuracy": 0.5265,
+    "profit_efficiency": 0.9709262823314513,
+    "total_profit": 100999055.59360515,
+    "optimal_profit": 104023402.63266914
+  },
+  "posteriors": {
+    "Harvest Now": {
+      "alpha": 39.0,
+      "beta": 27.0,
+      "mean": 0.5909090909090909,
+      "variance": 0.003607993092389293
+    },
+    "Wait 3 Days": {
+      "alpha": 1172.0,
+      "beta": 208.0,
+      "mean": 0.8492753623188406,
+      "variance": 9.26913260514429e-05
+    },
+    "Wait 7 Days": {
+      "alpha": 468.0,
+      "beta": 92.0,
+      "mean": 0.8357142857142857,
+      "variance": 0.00024473425733929937
+    }
+  }
+}

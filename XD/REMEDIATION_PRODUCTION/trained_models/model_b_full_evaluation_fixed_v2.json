@@ -1,0 +1,147 @@
+{
+  "model": "Model B - Planting Window (Full Dataset FIXED V2)",
+  "version": "fixed_v2.0_blocked_stratified",
+  "date": "2025-11-27T18:47:02.231469",
+  "status": "TRAINED",
+  "random_seed": 42,
+  "split_strategy": "blocked_stratified_time_series",
+  "fixes_applied": [
+    "Fixed time-aware split index mismatch",
+    "Added random seeds for reproducibility",
+    "Added class balancing",
+    "Verified scaler fit only on training data",
+    "Verified y_proba from X_test predictions",
+    "Fixed model filename to use algorithm name",
+    "Added feature order metadata",
+    "Added accuracy metric",
+    "BLOCKED STRATIFIED TIME SERIES SPLIT - balanced distribution"
+  ],
+  "dataset_info": {
+    "total_samples": 6226,
+    "train_samples": 3733,
+    "val_samples": 1241,
+    "test_samples": 1252,
+    "train_positive_rate": 0.5250468791856415,
+    "val_positive_rate": 0.5205479452054794,
+    "test_positive_rate": 0.5303514376996805,
+    "n_features": 17,
+    "feature_names": [
+      "growth_days",
+      "avg_temp_prev_30d",
+      "avg_rainfall_prev_30d",
+      "total_rainfall_prev_30d",
+      "rainy_days_prev_30d",
+      "plant_month",
+      "plant_quarter",
+      "plant_day_of_year",
+      "month_sin",
+      "month_cos",
+      "day_sin",
+      "day_cos",
+      "crop_type_encoded",
+      "province_encoded",
+      "season_encoded",
+      "soil_preference_encoded",
+      "seasonal_type_encoded"
+    ]
+  },
+  "algorithms": {
+    "xgboost": {
+      "name": "XGBoost",
+      "train_metrics": {
+        "f1": 0.9997449630196379,
+        "precision": 0.9994900560938297,
+        "recall": 1.0,
+        "roc_auc": 1.0
+      },
+      "val_metrics": {
+        "f1": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "roc_auc": 1.0
+      },
+      "test_metrics": {
+        "f1": 0.9984962406015038,
+        "precision": 0.996996996996997,
+        "recall": 1.0,
+        "roc_auc": 0.9999846324071797
+      },
+      "training_time": 0.2036728858947754,
+      "predictions_sample": [
+        0,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "random_forest": {
+      "name": "Random Forest",
+      "train_metrics": {
+        "f1": 0.9979633401221996,
+        "precision": 0.9959349593495935,
+        "recall": 1.0,
+        "roc_auc": 0.9999847485525513
+      },
+      "val_metrics": {
+        "f1": 0.9953632148377125,
+        "precision": 0.9938271604938271,
+        "recall": 0.9969040247678018,
+        "roc_auc": 0.9999687800816921
+      },
+      "test_metrics": {
+        "f1": 0.994748687171793,
+        "precision": 0.9910313901345291,
+        "recall": 0.9984939759036144,
+        "roc_auc": 0.9999564584870093
+      },
+      "training_time": 0.17055606842041016,
+      "predictions_sample": [
+        0,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "gradboost": {
+      "name": "Gradient Boosting",
+      "train_metrics": {
+        "f1": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "roc_auc": 0.9999999999999999
+      },
+      "val_metrics": {
+        "f1": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "roc_auc": 1.0
+      },
+      "test_metrics": {
+        "f1": 0.999247554552295,
+        "precision": 0.9984962406015038,
+        "recall": 1.0,
+        "roc_auc": 1.0
+      },
+      "training_time": 0.6699776649475098,
+      "predictions_sample": [
+        0,
+        0,
+        0,
+        1,
+        0
+      ]
+    }
+  },
+  "summary": {
+    "best_algorithm": "gradboost",
+    "best_f1": 0.999247554552295,
+    "best_precision": 0.9984962406015038,
+    "best_recall": 1.0,
+    "best_roc_auc": 1.0,
+    "total_training_time": 1.0442066192626953,
+    "total_elapsed_time": 17.24871,
+    "note": "Binary classification with FULL dataset using 3 algorithms (FIXED V2 - BLOCKED STRATIFIED)"
+  }
+}

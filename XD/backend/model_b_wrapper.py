@@ -89,12 +89,26 @@ class ModelBWrapper:
             if isinstance(model_wrapper, dict):
                 self.model = model_wrapper['model']
                 self.scaler = model_wrapper['scaler']
-                logger.info(f"✅ Model B loaded (version: {model_wrapper.get('version', 'unknown')})")
+                version = model_wrapper.get('version', 'unknown')
+                algorithm = model_wrapper.get('algorithm', 'unknown')
+                trained_date = model_wrapper.get('trained_date', 'unknown')
+                split_strategy = model_wrapper.get('split_strategy', 'unknown')
+                
+                logger.info(f"✅ Model B loaded successfully")
+                logger.info(f"   Version: {version}")
+                logger.info(f"   Algorithm: {algorithm}")
+                logger.info(f"   Trained: {trained_date[:10] if len(trained_date) > 10 else trained_date}")
+                logger.info(f"   Split Strategy: {split_strategy}")
+                
+                # Verify feature names if available
+                if 'feature_names' in model_wrapper:
+                    expected_features = model_wrapper['feature_names']
+                    logger.info(f"   Features: {len(expected_features)} (validated)")
             else:
                 # Old format (custom class)
                 self.model = model_wrapper
                 self.scaler = None
-                logger.info(f"✅ Model B loaded (old format)")
+                logger.warning(f"⚠️ Model B loaded (old format - consider retraining)")
         except Exception as e:
             logger.error(f"❌ Failed to load Model B: {e}")
             raise

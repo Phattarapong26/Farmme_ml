@@ -1,7 +1,7 @@
 {
   "model": "Model D - Harvest Decision Engine",
   "algorithm": "Thompson Sampling (L4 Contextual Bandit)",
-  "date": "2025-11-15T11:48:43.484223",
+  "date": "2025-11-26T16:48:59.157611",
   "status": "TRAINED",
   "metrics": {
     "decision_accuracy": 0.48875,

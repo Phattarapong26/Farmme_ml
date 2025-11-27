@@ -205,6 +205,13 @@ backend/scripts/exports/*.sql
 *.pth
 *.pt
 
+# Exception: Allow specific model files needed for deployment
+!backend/models/model_a_*.pkl
+!backend/models/model_b_*.pkl
+!backend/models/model_c_*.pkl
+!backend/models/model_d_*.pkl
+!backend/models/crop_characteristics.pkl
+
 # Training data (too large for git)
 buildingModel.py/Dataset/*.csv
 buildingModel.py/Dataset/*.json
